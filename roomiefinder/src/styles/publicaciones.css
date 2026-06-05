@@ -1,0 +1,172 @@
+.publicaciones-page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #ffffff;
+  min-height: 100vh;
+  color: #2a2a2a;
+}
+
+/* CONTENT */
+.publicaciones-page .page-content {
+  padding: 36px 40px 40px;
+}
+
+.publicaciones-page .page-title {
+  text-align: center;
+  font-size: 2.6rem;
+  font-weight: 400;
+  color: #999;
+  margin-bottom: 32px;
+  font-family: 'DM Serif Display', serif;
+  letter-spacing: 0.01em;
+}
+
+/* SEARCH ROW */
+.publicaciones-page .search-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.publicaciones-page .search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+}
+
+.publicaciones-page .search-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.publicaciones-page .search-input {
+  width: 100%;
+  padding: 15px 20px 15px 54px;
+  background: #e8e8e8;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  color: #555;
+  outline: none;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.publicaciones-page .search-input::placeholder {
+  color: #aaa;
+}
+
+.publicaciones-page .search-input:focus {
+  background: #e0e0e0;
+}
+
+.publicaciones-page .btn-add {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background-color: #d4d4d4;
+  border: none;
+  cursor: pointer;
+  font-size: 1.7rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #333;
+  transition: background-color 0.15s;
+  font-weight: 300;
+}
+
+.publicaciones-page .btn-add:hover {
+  background-color: #bbb;
+}
+
+/* CARDS GRID */
+.publicaciones-page .cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* CARD */
+.pub-card {
+  background-color: #f0f0f0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e2e2e2;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.pub-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.pub-card__image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: #e2e2e2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pub-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pub-card__house-icon {
+  color: #1a1a1a;
+  width: 72px;
+  height: 72px;
+}
+
+.pub-card__info {
+  padding: 12px 16px 14px;
+  border-top: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pub-card__title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.pub-card__location {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+@media (max-width: 1024px) {
+  .publicaciones-page .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .publicaciones-page .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .publicaciones-page .page-content {
+    padding: 24px 16px;
+  }
+}

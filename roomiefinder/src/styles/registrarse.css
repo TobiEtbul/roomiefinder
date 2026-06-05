@@ -1,0 +1,403 @@
+:root {
+  --bg: #e8e8e8;
+  --card-bg: #f0f0f0;
+  --input-bg: #ffffff;
+  --border: #d5d5d5;
+  --text-primary: #2a2a2a;
+  --text-secondary: #888888;
+  --tag-bg: #d9d9d9;
+  --tag-active-bg: #9a9a9a;
+  --btn-bg: #b5b5b5;
+  --btn-hover: #9a9a9a;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --font-main: 'DM Sans', sans-serif;
+  --font-display: 'DM Serif Display', serif;
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+
+.register-page {
+  font-family: var(--font-main);
+  background-color: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* HEADER */
+.register-page .page-header {
+  background-color: #d4d4d4;
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--border);
+}
+
+.register-page .page-title {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+}
+
+/* LAYOUT */
+.register-page .container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  padding: 20px 40px;
+}
+
+/* CARDS */
+.register-page .card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  box-shadow: var(--shadow);
+}
+
+.register-page .right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* AVATAR */
+.register-page .avatar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 28px;
+  position: relative;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.register-page .avatar-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid #aaa;
+  background-color: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.register-page .avatar-circle:hover {
+  border-color: #777;
+}
+
+.register-page .camera-icon {
+  width: 4rem;
+  height: 4rem;
+}
+
+.register-page .avatar-dot {
+  position: absolute;
+  bottom: 22px;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #333;
+  border: 2px solid var(--card-bg);
+}
+
+.register-page .avatar-label {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* FORM ELEMENTS */
+.register-page .form-group {
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.register-page .form-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.register-page .input-field {
+  width: 100%;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  font-family: var(--font-main);
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.register-page .input-field::placeholder {
+  color: var(--text-secondary);
+}
+
+.register-page .input-field:focus {
+  border-color: #999;
+  box-shadow: 0 0 0 3px rgba(150,150,150,0.15);
+}
+
+.register-page .input-field.half {
+  flex: 1;
+}
+
+/* SELECT */
+.register-page .select-wrapper {
+  position: relative;
+}
+
+.register-page .select-wrapper.half {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.register-page .select-wrapper.half .input-field {
+  width: 100%;
+}
+
+.register-page .select {
+  cursor: pointer;
+  padding-right: 36px;
+}
+
+.register-page .select-arrow {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+/* PASSWORD WRAPPER */
+.register-page .password-wrapper {
+  position: relative;
+}
+
+.register-page .password-wrapper .input-field {
+  padding-right: 44px;
+}
+
+.register-page .eye-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #bbb;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.register-page .eye-btn:hover {
+  color: #888;
+}
+
+/* CHECKBOX */
+.register-page .checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  margin-top: 4px;
+}
+
+.register-page .checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1.5px solid #bbb;
+  background-color: var(--input-bg);
+  cursor: pointer;
+  accent-color: #555;
+  flex-shrink: 0;
+}
+
+.register-page .checkbox-label {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+/* BUTTON */
+.register-page .btn-continuar {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background-color: var(--btn-bg);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 40px;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.register-page .btn-continuar:hover {
+  background-color: var(--btn-hover);
+}
+
+.register-page .btn-continuar:active {
+  transform: scale(0.98);
+}
+
+/* RIGHT PANEL — DESCRIPTION */
+.register-page .card-title {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+  letter-spacing: 0.01em;
+}
+
+.register-page .textarea {
+  width: 100%;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  font-family: var(--font-main);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  line-height: 1.7;
+}
+
+.register-page .textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+.register-page .textarea:focus {
+  border-color: #999;
+  box-shadow: 0 0 0 3px rgba(150,150,150,0.15);
+}
+
+.register-page .hint {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+/* RIGHT PANEL — PREFERENCES */
+.register-page .tags-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.register-page .tag {
+  background-color: var(--tag-bg);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 14px 10px;
+  font-family: var(--font-main);
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  text-align: center;
+}
+
+.register-page .tag:hover {
+  background-color: #c8c8c8;
+}
+
+.register-page .tag:active {
+  transform: scale(0.96);
+}
+
+.register-page .tag--active {
+  background-color: var(--tag-active-bg);
+  color: #fff;
+}
+
+.register-page .tag--add {
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+}
+
+/* ADD TAG */
+.register-page .add-tag-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.register-page .add-tag-input {
+  flex: 1;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+}
+
+.register-page .add-tag-confirm,
+.register-page .add-tag-cancel {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s;
+  flex-shrink: 0;
+}
+
+.register-page .add-tag-confirm {
+  background-color: #9a9a9a;
+  color: #fff;
+}
+
+.register-page .add-tag-confirm:hover {
+  background-color: #777;
+}
+
+.register-page .add-tag-cancel {
+  background-color: var(--tag-bg);
+  color: var(--text-secondary);
+}
+
+.register-page .add-tag-cancel:hover {
+  background-color: #c0c0c0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .register-page .container {
+    grid-template-columns: 1fr;
+    padding: 20px 16px;
+  }
+
+  .register-page .form-row {
+    flex-direction: column;
+  }
+
+  .register-page .input-field.half {
+    width: 100%;
+  }
+}

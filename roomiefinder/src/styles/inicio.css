@@ -1,0 +1,64 @@
+.inicio-page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #ffffff;
+  color: #000000;
+  min-height: 100vh;
+}
+
+.inicio-page header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 2.5rem;
+}
+
+.inicio-page .logo {
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #000;
+}
+
+.inicio-page nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.inicio-page nav a {
+  font-size: 1.1rem;
+  color: #000;
+  text-decoration: none;
+  border: 2px solid #000;
+  border-radius: 50px;
+  padding: 0.55rem 1.8rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.inicio-page nav a:hover {
+  background: #000;
+  color: #fff;
+}
+
+.inicio-page hr {
+  border: none;
+  border-top: 1px solid #000;
+}
+
+.inicio-page main {
+  padding: 4rem 2.5rem 2rem;
+}
+
+.inicio-page main h1 {
+  font-size: clamp(5rem, 12vw, 9rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.inicio-page main p {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #000;
+  margin-top: 0.5rem;
+}
