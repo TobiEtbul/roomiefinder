@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import '../styles/registrarse.css'
 
 const INITIAL_TAGS = ['Ordenado', 'Sociable', 'Tranquilo', 'Introvertido', 'Divertido']
@@ -14,6 +14,46 @@ export default function RegisterPage() {
   const [tags, setTags] = useState(INITIAL_TAGS.map(t => ({ label: t, active: false })))
   const [showAddInput, setShowAddInput] = useState(false)
   const [newTag, setNewTag] = useState('')
+  const [fotoPerfil, setFotoPerfil] = useState(null)
+  const [nombre, setNombre] = useState('')
+  const [dni, setDni] = useState('')
+  const [genero, setGenero] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [terminos, setTerminos] = useState(false)
+  const [descripcion, setDescripcion] = useState('')
+  const [modalCampos, setModalCampos] = useState(null)
+  const fileInputRef = useRef(null)
+
+  function handleFotoClick() {
+    fileInputRef.current.click()
+  }
+
+  function handleFotoChange(e) {
+    const file = e.target.files[0]
+    if (!file) return
+    const url = URL.createObjectURL(file)
+    setFotoPerfil(url)
+  }
+
+  function handleContinuar() {
+    const camposFaltantes = []
+    if (!fotoPerfil) camposFaltantes.push('Foto de perfil')
+    if (!nombre.trim()) camposFaltantes.push('Nombre completo')
+    if (!dni.trim()) camposFaltantes.push('DNI')
+    if (!genero) camposFaltantes.push('Género')
+    if (!email.trim()) camposFaltantes.push('Correo electrónico')
+    if (fecha.length < 10) camposFaltantes.push('Fecha de nacimiento')
+    if (!password.trim()) camposFaltantes.push('Contraseña')
+    if (!terminos) camposFaltantes.push('Términos y condiciones')
+    if (descripcion.trim().split(/\s+/).filter(Boolean).length < 50) camposFaltantes.push('Descripción personal (mínimo 50 palabras)')
+
+    if (camposFaltantes.length > 0) {
+      setModalCampos(camposFaltantes)
+      return
+    }
+
+  }
 
   function handleFechaChange(e) {
     let v = e.target.value.replace(/\D/g, '')
@@ -63,26 +103,51 @@ export default function RegisterPage() {
 
       <main className="container">
 
-        {/* LEFT PANEL */}
         <section className="card left-panel">
 
-          <div className="avatar-wrapper">
+          <div className="avatar-wrapper" onClick={handleFotoClick} style={{ cursor: 'pointer' }}>
             <div className="avatar-circle">
-              <img src="/camara.png" alt="Cámara" className="camera-icon" />
+              {fotoPerfil
+                ? <img src={fotoPerfil} alt="Foto de perfil" className="avatar-preview" />
+                : <img src="/user-icon.svg" alt="Usuario" className="camera-icon" />
+              }
             </div>
             <span className="avatar-dot" />
             <p className="avatar-label">Foto de perfil</p>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleFotoChange}
+            />
           </div>
 
           <div className="form-group">
-            <input type="text" className="input-field" placeholder="Nombre completo" />
+            <input
+              type="text"
+              className="input-field"
+              placeholder="Nombre completo"
+              value={nombre}
+              onChange={e => setNombre(e.target.value)}
+            />
           </div>
 
           <div className="form-row">
-            <input type="text" className="input-field half" placeholder="DNI" />
+            <input
+              type="text"
+              className="input-field half"
+              placeholder="DNI"
+              value={dni}
+              onChange={e => setDni(e.target.value)}
+            />
             <div className="select-wrapper half">
-              <select className="input-field select">
-                <option value="" disabled defaultValue="">Genero</option>
+              <select
+                className="input-field select"
+                value={genero}
+                onChange={e => setGenero(e.target.value)}
+              >
+                <option value="" disabled>Genero</option>
                 <option>Masculino</option>
                 <option>Femenino</option>
                 <option>No binario</option>
@@ -93,7 +158,13 @@ export default function RegisterPage() {
           </div>
 
           <div className="form-group">
-            <input type="email" className="input-field" placeholder="Correo electronico" />
+            <input
+              type="email"
+              className="input-field"
+              placeholder="Correo electronico"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
           </div>
 
           <div className="form-group">
@@ -115,6 +186,8 @@ export default function RegisterPage() {
                 type={showPassword ? 'text' : 'password'}
                 className="input-field"
                 placeholder="Contraseña"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
               />
               <button
                 type="button"
@@ -139,14 +212,19 @@ export default function RegisterPage() {
           </div>
 
           <div className="checkbox-row">
-            <input type="checkbox" id="terms" className="checkbox" />
+            <input
+              type="checkbox"
+              id="terms"
+              className="checkbox"
+              checked={terminos}
+              onChange={e => setTerminos(e.target.checked)}
+            />
             <label htmlFor="terms" className="checkbox-label">Acepto los terminos y condiciones</label>
           </div>
 
-          <button className="btn-continuar">Continuar</button>
+          <button className="btn-continuar" onClick={handleContinuar}>Continuar</button>
         </section>
 
-        {/* RIGHT PANEL */}
         <aside className="right-column">
 
           <div className="card description-card">
@@ -155,6 +233,8 @@ export default function RegisterPage() {
               className="textarea"
               placeholder="Gustos personales, preferencias, costumbres"
               rows={8}
+              value={descripcion}
+              onChange={e => setDescripcion(e.target.value)}
             />
             <p className="hint">Minimo 50 palabras</p>
           </div>
@@ -196,6 +276,20 @@ export default function RegisterPage() {
 
         </aside>
       </main>
+      {modalCampos && (
+        <div className="modal-overlay" onClick={() => setModalCampos(null)}>
+          <div className="modal-card" onClick={e => e.stopPropagation()}>
+            <h2 className="modal-title">Campos incompletos</h2>
+            <p className="modal-subtitle">Completá los siguientes campos para continuar:</p>
+            <ul className="modal-list">
+              {modalCampos.map((campo, i) => (
+                <li key={i} className="modal-item">{campo}</li>
+              ))}
+            </ul>
+            <button className="modal-btn" onClick={() => setModalCampos(null)}>Entendido</button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
