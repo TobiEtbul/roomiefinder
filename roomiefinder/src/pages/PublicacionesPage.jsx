@@ -67,7 +67,11 @@ export default function PublicacionesPage() {
         ) : (
           <div className="cards-grid">
             {filtered.map(post => (
-              <div key={post.id} className="pub-card">
+              <div
+                key={post.id}
+                className="pub-card"
+                onClick={() => navigate(`/publicacion/${post.id}`)}
+              >
                 <div className="pub-card__image">
                   {post.image ? (
                     <img src={post.image} alt={post.title} />

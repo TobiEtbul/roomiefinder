@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import PublicacionesPage from './pages/PublicacionesPage'
 import NuevaPublicacionPage from './pages/NuevaPublicacionPage'
+import DetallePublicacionPage from './pages/DetallePublicacionPage'
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/registrarse" element={<RegisterPage />} />
           <Route path="/home" element={<PublicacionesPage />} />
           <Route path="/nueva-publicacion" element={<NuevaPublicacionPage />} />
+          <Route path="/publicacion/:id" element={<DetallePublicacionPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

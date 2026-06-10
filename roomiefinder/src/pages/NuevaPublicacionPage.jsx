@@ -48,6 +48,7 @@ export default function NuevaPublicacionPage() {
       genero,
       descripcion,
       image: images[0] || null,
+      images,
     })
     navigate('/home')
   }
