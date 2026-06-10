@@ -29,6 +29,14 @@ function SearchIcon() {
   )
 }
 
+function PlusIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+      <path d="M19 13H13v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+    </svg>
+  )
+}
+
 export default function PublicacionesPage() {
   const [search, setSearch] = useState('')
   const navigate = useNavigate()
@@ -57,7 +65,7 @@ export default function PublicacionesPage() {
               onChange={e => setSearch(e.target.value)}
             />
           </div>
-          <button className="btn-add" onClick={() => navigate('/nueva-publicacion')}>+</button>
+          <button className="btn-add" onClick={() => navigate('/nueva-publicacion')}><PlusIcon /></button>
         </div>
 
         {filtered.length === 0 ? (

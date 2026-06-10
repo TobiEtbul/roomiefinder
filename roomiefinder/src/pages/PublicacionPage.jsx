@@ -26,7 +26,7 @@ function HouseIcon() {
   )
 }
 
-export default function DetallePublicacionPage() {
+export default function PublicacionPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { publicaciones } = usePublicaciones()

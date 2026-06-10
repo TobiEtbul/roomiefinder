@@ -12,7 +12,7 @@ function HomeIcon() {
 function ChatIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
-      <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+      <path d="M20 4H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/>
     </svg>
   )
 }

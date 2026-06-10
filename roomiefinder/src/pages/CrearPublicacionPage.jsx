@@ -20,7 +20,7 @@ function ChevronIcon() {
   )
 }
 
-export default function NuevaPublicacionPage() {
+export default function CrearPublicacionPage() {
   const navigate = useNavigate()
   const { agregarPublicacion } = usePublicaciones()
   const fileInputRef = useRef(null)
