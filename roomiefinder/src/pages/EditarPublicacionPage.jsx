@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import AppNavbar from '../components/AppNavbar'
 import { usePublicaciones } from '../context/PublicacionesContext'
 import '../styles/nueva-publicacion.css'
@@ -20,17 +20,22 @@ function ChevronIcon() {
   )
 }
 
-export default function CrearPublicacionPage() {
+export default function EditarPublicacionPage() {
   const navigate = useNavigate()
-  const { agregarPublicacion } = usePublicaciones()
+  const { id } = useParams()
+  const { publicaciones, actualizarPublicacion } = usePublicaciones()
   const fileInputRef = useRef(null)
 
-  const [nombre, setNombre]       = useState('')
-  const [precio, setPrecio]       = useState('')
-  const [genero, setGenero]       = useState('')
-  const [ubicacion, setUbicacion] = useState('')
-  const [descripcion, setDescripcion] = useState('')
-  const [images, setImages]       = useState([])
+  const post = publicaciones.find(p => String(p.id) === id)
+
+  const [nombre, setNombre]       = useState(post?.title || '')
+  const [precio, setPrecio]       = useState(post?.precio || '')
+  const [genero, setGenero]       = useState(post?.genero || '')
+  const [ubicacion, setUbicacion] = useState(post?.location || '')
+  const [descripcion, setDescripcion] = useState(post?.descripcion || '')
+  const [images, setImages]       = useState(
+    post ? (post.images?.length ? post.images : (post.image ? [post.image] : [])) : []
+  )
 
   function handleImageSelect(e) {
     const files = Array.from(e.target.files)
@@ -39,9 +44,9 @@ export default function CrearPublicacionPage() {
     e.target.value = ''
   }
 
-  function handlePublicar() {
+  function handleGuardar() {
     if (!nombre.trim()) return
-    agregarPublicacion({
+    actualizarPublicacion(post.id, {
       title: nombre.trim(),
       location: ubicacion.trim() || 'Ubicacion',
       precio,
@@ -50,17 +55,32 @@ export default function CrearPublicacionPage() {
       image: images[0] || null,
       images,
     })
-    navigate('/home')
+    navigate(`/publicacion/${post.id}`)
   }
 
-  const canPublish = nombre.trim().length > 0
+  if (!post) {
+    return (
+      <div className="nueva-pub-page">
+        <AppNavbar />
+        <div className="page-content">
+          <h1 className="page-title">Editar Publicación</h1>
+          <p>No se encontró la publicación.</p>
+          <button className="btn-publicar" onClick={() => navigate('/perfil')}>
+            Volver al perfil
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  const canSave = nombre.trim().length > 0
 
   return (
     <div className="nueva-pub-page">
       <AppNavbar />
 
       <div className="page-content">
-        <h1 className="page-title">Crear Publicación</h1>
+        <h1 className="page-title">Editar Publicación</h1>
 
         <div className="layout">
 
@@ -131,10 +151,10 @@ export default function CrearPublicacionPage() {
 
             <button
               className="btn-publicar"
-              onClick={handlePublicar}
-              disabled={!canPublish}
+              onClick={handleGuardar}
+              disabled={!canSave}
             >
-              Publicar
+              Guardar cambios
             </button>
           </section>
 

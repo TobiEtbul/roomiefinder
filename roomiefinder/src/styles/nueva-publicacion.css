@@ -106,7 +106,7 @@
   resize: vertical;
   line-height: 1.8;
   transition: border-color 0.2s, box-shadow 0.2s;
-  min-height: 220px;
+  min-height: 120px;
 }
 
 .nueva-pub-page .textarea::placeholder {

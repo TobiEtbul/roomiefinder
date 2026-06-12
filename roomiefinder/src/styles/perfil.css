@@ -1,0 +1,287 @@
+.perfil-page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #ffffff;
+  min-height: 100vh;
+  color: #2a2a2a;
+}
+
+.perfil-page .page-content {
+  padding: 36px 40px 40px;
+}
+
+/* LAYOUT */
+.perfil-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* SIDEBAR */
+.perfil-sidebar {
+  background-color: #f0f0f0;
+  border: 1px solid #e2e2e2;
+  border-radius: 18px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.perfil-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #e2e2e2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #b5b5b5;
+}
+
+.perfil-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.perfil-nombre {
+  margin: 18px 0 0;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+.perfil-descripcion {
+  width: 100%;
+  margin-top: 20px;
+  background-color: #e2e2e2;
+  border-radius: 12px;
+  padding: 16px 18px;
+  min-height: 150px;
+}
+
+.perfil-descripcion p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #444;
+  white-space: pre-wrap;
+}
+
+.btn-editar {
+  margin-top: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  background-color: #d4d4d4;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  color: #333;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.15s;
+}
+
+.btn-editar:hover {
+  background-color: #bbb;
+}
+
+/* TABS */
+.perfil-tabs {
+  display: flex;
+  gap: 8px;
+  background-color: #f0f0f0;
+  border: 1px solid #e2e2e2;
+  border-radius: 16px;
+  padding: 14px 18px;
+  margin-bottom: 22px;
+}
+
+.perfil-tab {
+  border: none;
+  background: transparent;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.7rem;
+  color: #1a1a1a;
+  padding: 6px 22px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.perfil-tab.active {
+  background-color: #d4d4d4;
+}
+
+/* PANEL */
+.perfil-panel {
+  background-color: #f0f0f0;
+  border: 1px solid #e2e2e2;
+  border-radius: 18px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 300px;
+}
+
+.perfil-empty {
+  text-align: center;
+  color: #aaa;
+  font-size: 1.05rem;
+  margin: auto;
+}
+
+/* ROW (publicación) */
+.perfil-row {
+  display: flex;
+  align-items: stretch;
+  gap: 18px;
+  background-color: #e6e6e6;
+  border-radius: 14px;
+  padding: 14px;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.15s;
+  position: relative;
+}
+
+.perfil-row:hover {
+  background-color: #dcdcdc;
+  transform: translateY(-2px);
+}
+
+.perfil-row__image {
+  width: 190px;
+  flex-shrink: 0;
+  aspect-ratio: 16 / 10;
+  background-color: #d8d8d8;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.perfil-row__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.perfil-row__house-icon {
+  color: #1a1a1a;
+  width: 56px;
+  height: 56px;
+}
+
+.perfil-row__info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.perfil-row__title {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #1a1a1a;
+}
+
+.perfil-row__location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.perfil-row__precio {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.perfil-row__meta {
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 2px;
+}
+
+.perfil-row__more-wrap {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+}
+
+.perfil-row__more {
+  border: none;
+  background: transparent;
+  font-size: 1.4rem;
+  color: #555;
+  letter-spacing: 2px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px 8px;
+  border-radius: 8px;
+  transition: background-color 0.15s;
+}
+
+.perfil-row__more:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.perfil-menu {
+  position: absolute;
+  top: 32px;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  padding: 6px;
+  min-width: 140px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.perfil-menu__item {
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #2a2a2a;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.15s;
+}
+
+.perfil-menu__item:hover {
+  background-color: #f0f0f0;
+}
+
+.perfil-menu__item--danger {
+  color: #c0392b;
+}
+
+.perfil-menu__item--danger:hover {
+  background-color: #fbeae8;
+}
+
+@media (max-width: 900px) {
+  .perfil-layout {
+    grid-template-columns: 1fr;
+  }
+  .perfil-row__image {
+    width: 130px;
+  }
+  .perfil-tab {
+    font-size: 1.3rem;
+  }
+}
