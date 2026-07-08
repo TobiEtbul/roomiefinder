@@ -1,11 +1,14 @@
 :root {
-  --bg: #e8e8e8;
-  --card-bg: #f0f0f0;
+  --bg: #e9eaec;
+  --card-bg: #ffffff;
   --input-bg: #ffffff;
-  --border: #d5d5d5;
-  --text-primary: #2a2a2a;
-  --text-secondary: #888888;
-  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  --border: #cdd8ea;
+  --text-primary: #1b2a4a;
+  --text-secondary: #8b97ac;
+  --accent: #2f6bff;
+  --accent-hover: #1d54e0;
+  --header-bg: #0c1a3c;
+  --shadow: 0 2px 16px rgba(20,40,90,0.08);
   --radius-lg: 18px;
   --radius-md: 12px;
   --font-main: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -21,16 +24,15 @@
 
 /* HEADER */
 .login-page .page-header {
-  background-color: #d4d4d4;
+  background-color: var(--header-bg);
   padding: 20px 40px;
-  border-bottom: 1px solid var(--border);
 }
 
 .login-page .page-title {
-  font-family: var(--font-display);
+  font-family: var(--font-main);
   font-size: 1.8rem;
-  font-weight: 400;
-  color: var(--text-secondary);
+  font-weight: 700;
+  color: #ffffff;
   letter-spacing: 0.01em;
 }
 
@@ -61,8 +63,9 @@
 /* LABELS */
 .login-page label {
   display: block;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
@@ -86,12 +89,12 @@
 }
 
 .login-page .input-field::placeholder {
-  color: #bbb;
+  color: var(--text-secondary);
 }
 
 .login-page .input-field:focus {
-  border-color: #999;
-  box-shadow: 0 0 0 3px rgba(150,150,150,0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(47,107,255,0.15);
 }
 
 /* PASSWORD WRAPPER */
@@ -105,28 +108,31 @@
 
 .login-page .eye-btn {
   position: absolute;
-  right: 14px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
-  border: none;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
   cursor: pointer;
-  color: #bbb;
-  padding: 4px;
+  color: var(--text-secondary);
+  padding: 6px;
   display: flex;
   align-items: center;
   line-height: 1;
+  transition: color 0.15s, border-color 0.15s;
 }
 
 .login-page .eye-btn:hover {
-  color: #888;
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 /* FORGOT PASSWORD */
 .login-page .forgot-password {
   display: block;
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   margin-top: 8px;
   text-decoration: none;
   cursor: pointer;
@@ -137,7 +143,7 @@
 }
 
 .login-page .forgot-password:hover {
-  color: #444;
+  color: var(--accent);
 }
 
 /* ENTRAR BUTTON */
@@ -146,19 +152,19 @@
   width: 65%;
   margin: 16px auto 28px;
   padding: 14px;
-  background: #3a3a3a;
+  background: var(--accent);
   color: #fff;
   border: none;
   border-radius: 50px;
   font-family: var(--font-main);
   font-size: 1.1rem;
-  font-weight: 400;
+  font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .login-page .btn-entrar:hover {
-  background: #222;
+  background: var(--accent-hover);
 }
 
 /* SOCIAL BUTTONS */
