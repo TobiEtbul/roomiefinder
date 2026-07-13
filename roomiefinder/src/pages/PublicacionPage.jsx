@@ -26,6 +26,14 @@ function HouseIcon() {
   )
 }
 
+function PersonIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="34" height="34">
+      <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+    </svg>
+  )
+}
+
 export default function PublicacionPage() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -76,7 +84,9 @@ export default function PublicacionPage() {
     )
   }
 
-  const precioLabel = PRECIO_LABELS[post.precio] || post.precio || ''
+  const precioLabel = post.precio
+    ? (PRECIO_LABELS[post.precio] || `$ ${post.precio} USD`)
+    : ''
   const generoLabel = GENERO_LABELS[post.genero] || post.genero || ''
   const hasImages = images.length > 0
 
@@ -89,6 +99,11 @@ export default function PublicacionPage() {
 
           {/* LEFT — imagen + descripción de persona + inscripción */}
           <section className="left-card">
+            <div className="poster">
+              <span className="poster__avatar"><PersonIcon /></span>
+              <span className="poster__name">Nombre Persona</span>
+            </div>
+
             <div
               className={`detalle-image${hasImages ? ' detalle-image--clickable' : ''}`}
               onClick={() => hasImages && setLightboxIndex(0)}
@@ -119,18 +134,16 @@ export default function PublicacionPage() {
               </div>
             )}
 
-            <div className="persona-box">
-              <p className="persona-placeholder">Corta descripción de persona<br />(edad, gustos, etc)</p>
-            </div>
-
             <button className="btn-inscripcion">Inscripción</button>
           </section>
 
           {/* RIGHT — datos de la publicación */}
           <section className="right-card">
 
-            <div className="field field--full">
-              <span className="field-value">{post.title}</span>
+            <div className="field field--full field--title">
+              <span className={post.title ? 'field-value' : 'field-empty'}>
+                {post.title || 'Nombre'}
+              </span>
             </div>
 
             <div className="field field--full">

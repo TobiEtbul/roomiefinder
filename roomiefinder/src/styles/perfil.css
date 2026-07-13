@@ -1,8 +1,16 @@
 .perfil-page {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: #ffffff;
+  --bg: #e9eaec;
+  --card-bg: #ffffff;
+  --text-primary: #1b2a4a;
+  --text-muted: #8b97ac;
+  --accent: #2f6bff;
+  --accent-hover: #1d54e0;
+  --row-bg: #cfe0fb;
+  --row-border: #a9c6f5;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg);
   min-height: 100vh;
-  color: #2a2a2a;
+  color: var(--text-primary);
 }
 
 .perfil-page .page-content {
@@ -19,25 +27,25 @@
 
 /* SIDEBAR */
 .perfil-sidebar {
-  background-color: #f0f0f0;
-  border: 1px solid #e2e2e2;
+  background-color: var(--card-bg);
   border-radius: 18px;
-  padding: 28px 24px;
+  padding: 28px 24px 32px;
+  box-shadow: 0 2px 16px rgba(20,40,90,0.08);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .perfil-avatar {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background-color: #e2e2e2;
+  width: 190px;
+  height: 230px;
+  border-radius: 18px;
+  background-color: #d4d6da;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  color: #b5b5b5;
+  color: var(--accent);
 }
 
 .perfil-avatar img {
@@ -47,59 +55,45 @@
 }
 
 .perfil-nombre {
-  margin: 18px 0 0;
-  font-size: 1.6rem;
-  font-weight: 500;
-  color: #1a1a1a;
+  margin: 24px 0 0;
+  font-size: 1.9rem;
+  font-weight: 400;
+  color: var(--text-primary);
   text-align: center;
 }
 
-.perfil-descripcion {
-  width: 100%;
-  margin-top: 20px;
-  background-color: #e2e2e2;
-  border-radius: 12px;
-  padding: 16px 18px;
-  min-height: 150px;
-}
-
-.perfil-descripcion p {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: #444;
-  white-space: pre-wrap;
-}
-
 .btn-editar {
-  margin-top: 24px;
+  margin-top: 26px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 11px 22px;
-  background-color: #d4d4d4;
+  width: 100%;
+  padding: 13px 22px;
+  background-color: var(--accent);
   border: none;
   border-radius: 50px;
-  font-size: 1rem;
-  color: #333;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #ffffff;
   cursor: pointer;
   font-family: inherit;
   transition: background-color 0.15s;
 }
 
 .btn-editar:hover {
-  background-color: #bbb;
+  background-color: var(--accent-hover);
 }
 
 /* TABS */
 .perfil-tabs {
   display: flex;
   gap: 8px;
-  background-color: #f0f0f0;
-  border: 1px solid #e2e2e2;
+  background-color: var(--card-bg);
   border-radius: 16px;
-  padding: 14px 18px;
+  padding: 16px 22px;
   margin-bottom: 22px;
+  box-shadow: 0 2px 16px rgba(20,40,90,0.08);
 }
 
 .perfil-tab {
@@ -107,32 +101,37 @@
   background: transparent;
   font-family: 'DM Serif Display', serif;
   font-size: 1.7rem;
-  color: #1a1a1a;
-  padding: 6px 22px;
+  color: var(--text-primary);
+  padding: 8px 34px;
   border-radius: 50px;
   cursor: pointer;
-  transition: background-color 0.15s;
+  transition: background-color 0.15s, color 0.15s;
 }
 
 .perfil-tab.active {
-  background-color: #d4d4d4;
+  background-color: var(--accent);
+  color: #ffffff;
+}
+
+.perfil-tab:not(.active):hover {
+  background-color: #eef3fd;
 }
 
 /* PANEL */
 .perfil-panel {
-  background-color: #f0f0f0;
-  border: 1px solid #e2e2e2;
+  background-color: var(--card-bg);
   border-radius: 18px;
-  padding: 22px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
   min-height: 300px;
+  box-shadow: 0 2px 16px rgba(20,40,90,0.08);
 }
 
 .perfil-empty {
   text-align: center;
-  color: #aaa;
+  color: var(--text-muted);
   font-size: 1.05rem;
   margin: auto;
 }
@@ -141,26 +140,22 @@
 .perfil-row {
   display: flex;
   align-items: stretch;
-  gap: 18px;
-  background-color: #e6e6e6;
-  border-radius: 14px;
-  padding: 14px;
+  gap: 20px;
   cursor: pointer;
-  transition: background-color 0.15s, transform 0.15s;
-  position: relative;
+  transition: transform 0.15s;
 }
 
 .perfil-row:hover {
-  background-color: #dcdcdc;
   transform: translateY(-2px);
 }
 
 .perfil-row__image {
-  width: 190px;
+  width: 210px;
   flex-shrink: 0;
-  aspect-ratio: 16 / 10;
-  background-color: #d8d8d8;
-  border-radius: 8px;
+  aspect-ratio: 16 / 11;
+  background-color: var(--row-bg);
+  border: 1.5px solid var(--row-border);
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -174,41 +169,49 @@
 }
 
 .perfil-row__house-icon {
-  color: #1a1a1a;
-  width: 56px;
-  height: 56px;
+  color: var(--accent);
+  width: 72px;
+  height: 72px;
 }
 
 .perfil-row__info {
+  position: relative;
+  flex: 1;
+  background-color: var(--row-bg);
+  border: 1.5px solid var(--row-border);
+  border-radius: 14px;
+  padding: 20px 24px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 4px 0;
+  gap: 10px;
 }
 
 .perfil-row__title {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 400;
-  color: #1a1a1a;
+  color: var(--text-primary);
+  padding-right: 40px;
 }
 
 .perfil-row__location {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 1rem;
-  color: #333;
+  font-size: 1.05rem;
+  color: var(--text-primary);
 }
 
 .perfil-row__precio {
-  font-size: 0.85rem;
-  color: #555;
+  font-size: 1.05rem;
+  color: var(--text-primary);
 }
 
 .perfil-row__meta {
-  font-size: 0.85rem;
-  color: #777;
-  margin-top: 2px;
+  position: absolute;
+  bottom: 16px;
+  right: 22px;
+  font-size: 0.9rem;
+  color: #4a5a7a;
 }
 
 .perfil-row__more-wrap {
@@ -221,7 +224,7 @@
   border: none;
   background: transparent;
   font-size: 1.4rem;
-  color: #555;
+  color: var(--text-primary);
   letter-spacing: 2px;
   cursor: pointer;
   line-height: 1;
@@ -231,7 +234,7 @@
 }
 
 .perfil-row__more:hover {
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: rgba(27, 42, 74, 0.1);
 }
 
 .perfil-menu {
@@ -239,9 +242,9 @@
   top: 32px;
   right: 0;
   background: #ffffff;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e0e6f0;
   border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 20px rgba(20, 40, 90, 0.18);
   padding: 6px;
   min-width: 140px;
   z-index: 10;
@@ -256,14 +259,14 @@
   padding: 10px 14px;
   border-radius: 8px;
   font-size: 0.95rem;
-  color: #2a2a2a;
+  color: var(--text-primary);
   cursor: pointer;
   font-family: inherit;
   transition: background-color 0.15s;
 }
 
 .perfil-menu__item:hover {
-  background-color: #f0f0f0;
+  background-color: #eef3fd;
 }
 
 .perfil-menu__item--danger {
@@ -283,5 +286,6 @@
   }
   .perfil-tab {
     font-size: 1.3rem;
+    padding: 8px 22px;
   }
 }

@@ -7,7 +7,7 @@ import '../styles/perfil.css'
 // Datos mock del usuario logueado.
 // TODO: reemplazar por el usuario real cuando esté la base de datos.
 const USUARIO_MOCK = {
-  nombre: 'Juana Perez',
+  nombre: 'Nombre Usuario',
   foto: null,
   descripcion: 'Descripción personal del usuario. Gustos, preferencias y costumbres.',
 }
@@ -99,10 +99,6 @@ export default function PerfilPage() {
 
             <h2 className="perfil-nombre">{USUARIO_MOCK.nombre}</h2>
 
-            <div className="perfil-descripcion">
-              <p>{USUARIO_MOCK.descripcion}</p>
-            </div>
-
             <button className="btn-editar" onClick={() => navigate('/editar-perfil')}>
               <EditIcon /> Editar Perfil
             </button>
@@ -122,7 +118,7 @@ export default function PerfilPage() {
                 className={`perfil-tab${tab === 'inscripciones' ? ' active' : ''}`}
                 onClick={() => setTab('inscripciones')}
               >
-                Inscripciones
+                Inscripción
               </button>
             </div>
 
@@ -135,7 +131,9 @@ export default function PerfilPage() {
                 ) : (
                   misPublicaciones.map(post => {
                     const img = post.image || post.images?.[0] || null
-                    const precio = PRECIO_LABELS[post.precio] || post.precio || ''
+                    const precio = post.precio
+                      ? (PRECIO_LABELS[post.precio] || `$ ${post.precio} USD`)
+                      : ''
                     return (
                       <div
                         key={post.id}
@@ -156,8 +154,8 @@ export default function PerfilPage() {
                             <div className="perfil-row__precio">{precio} / mes</div>
                           )}
                           <div className="perfil-row__meta">0 interesados</div>
-                        </div>
-                        <div className="perfil-row__more-wrap">
+
+                          <div className="perfil-row__more-wrap">
                           <button
                             className="perfil-row__more"
                             onClick={e => {
@@ -188,6 +186,7 @@ export default function PerfilPage() {
                               </button>
                             </div>
                           )}
+                          </div>
                         </div>
                       </div>
                     )

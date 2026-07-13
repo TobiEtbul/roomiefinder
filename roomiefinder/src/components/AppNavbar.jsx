@@ -1,21 +1,6 @@
+import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import '../styles/app-navbar.css'
-
-function HomeIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
-      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-    </svg>
-  )
-}
-
-function ChatIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
-      <path d="M20 4H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/>
-    </svg>
-  )
-}
 
 function PersonIcon({ size = 32 }) {
   return (
@@ -25,28 +10,96 @@ function PersonIcon({ size = 32 }) {
   )
 }
 
+function BellIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="26" height="26">
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+      <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+    </svg>
+  )
+}
+
+function MenuIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" width="28" height="28">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  )
+}
+
 export default function AppNavbar() {
   const location = useLocation()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef(null)
+
   const isActive = (path) => location.pathname === path
+
+  // Cerrar el menú al hacer clic fuera
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false)
+      }
+    }
+    if (menuOpen) document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [menuOpen])
 
   return (
     <header className="app-navbar">
       <Link to="/home" className="app-navbar__brand">Roomie Finder</Link>
 
-      <nav className="app-navbar__nav">
-        <Link to="/home" className={`app-navbar__item${isActive('/home') ? ' active' : ''}`}>
-          <HomeIcon /> Home
+      <div className="app-navbar__right">
+        <Link to="/perfil" className="app-navbar__user">
+          <span className="app-navbar__avatar">
+            <PersonIcon size={26} />
+          </span>
+          <span className="app-navbar__username">Nombre<br />Persona</span>
         </Link>
-        <Link to="/chats" className={`app-navbar__item${isActive('/chats') ? ' active' : ''}`}>
-          <ChatIcon /> Chats
-        </Link>
-        <Link to="/perfil" className={`app-navbar__item${isActive('/perfil') ? ' active' : ''}`}>
-          <PersonIcon /> Perfil
-        </Link>
-      </nav>
 
-      <div className="app-navbar__avatar">
-        <PersonIcon size={26} />
+        <button type="button" className="app-navbar__icon-btn" aria-label="Notificaciones">
+          <BellIcon />
+        </button>
+
+        <div className="app-navbar__menu" ref={menuRef}>
+          <button
+            type="button"
+            className="app-navbar__icon-btn"
+            aria-label="Menú"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(v => !v)}
+          >
+            <MenuIcon />
+          </button>
+
+          {menuOpen && (
+            <nav className="app-navbar__dropdown">
+              <Link
+                to="/home"
+                className={`app-navbar__dropdown-item${isActive('/home') ? ' active' : ''}`}
+                onClick={() => setMenuOpen(false)}
+              >
+                Home
+              </Link>
+              <Link
+                to="/chats"
+                className={`app-navbar__dropdown-item${isActive('/chats') ? ' active' : ''}`}
+                onClick={() => setMenuOpen(false)}
+              >
+                Chats
+              </Link>
+              <Link
+                to="/perfil"
+                className={`app-navbar__dropdown-item${isActive('/perfil') ? ' active' : ''}`}
+                onClick={() => setMenuOpen(false)}
+              >
+                Perfil
+              </Link>
+            </nav>
+          )}
+        </div>
       </div>
     </header>
   )

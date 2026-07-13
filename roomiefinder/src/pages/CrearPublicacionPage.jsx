@@ -78,19 +78,17 @@ export default function CrearPublicacionPage() {
             </div>
 
             <div className="select-row">
-              <div className="select-wrapper">
-                <select
-                  className="input-field"
+              <div className="price-field">
+                <span className="price-field__prefix">$</span>
+                <input
+                  type="number"
+                  min="0"
+                  className="price-field__input"
+                  placeholder="0"
                   value={precio}
                   onChange={e => setPrecio(e.target.value)}
-                >
-                  <option value="" disabled>Precios</option>
-                  <option value="0-500">$0 – $500 USD</option>
-                  <option value="500-1000">$500 – $1.000 USD</option>
-                  <option value="1000-2000">$1.000 – $2.000 USD</option>
-                  <option value="2000+">+ $2.000 USD</option>
-                </select>
-                <ChevronIcon />
+                />
+                <span className="price-field__suffix">USD</span>
               </div>
 
               <div className="select-wrapper">

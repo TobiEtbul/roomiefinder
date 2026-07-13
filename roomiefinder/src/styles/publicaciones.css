@@ -1,21 +1,153 @@
+:root {
+  --bg: #e9eaec;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --border: #cdd8ea;
+  --text-primary: #1b2a4a;
+  --text-secondary: #8b97ac;
+  --accent: #2f6bff;
+  --accent-hover: #1d54e0;
+  --header-bg: #0c1a3c;
+  --sidebar-bg: #e2e3e5;
+}
+
 .publicaciones-page {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: #ffffff;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg);
   min-height: 100vh;
-  color: #2a2a2a;
+  color: var(--text-primary);
+}
+
+/* LAYOUT: sidebar + content */
+.publicaciones-page .page-body {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  align-items: start;
+  min-height: calc(100vh - 62px);
+}
+
+/* FILTERS SIDEBAR */
+.publicaciones-page .filters-sidebar {
+  background-color: var(--sidebar-bg);
+  padding: 32px 28px;
+  min-height: calc(100vh - 62px);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.publicaciones-page .filters-title {
+  font-size: 1.9rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  font-family: 'DM Serif Display', serif;
+  margin-bottom: 4px;
+}
+
+.publicaciones-page .filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.publicaciones-page .filter-label {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.publicaciones-page .filter-row {
+  display: flex;
+  gap: 12px;
+}
+
+.publicaciones-page .filter-input {
+  width: 100%;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.publicaciones-page .filter-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.publicaciones-page .filter-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(47,107,255,0.15);
+}
+
+/* hide number input spinners */
+.publicaciones-page .filter-input[type="number"]::-webkit-inner-spin-button,
+.publicaciones-page .filter-input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.publicaciones-page .filter-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* SELECT */
+.publicaciones-page .filter-select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.publicaciones-page .filter-select {
+  cursor: pointer;
+  padding-right: 40px;
+}
+
+.publicaciones-page .filter-select__chevron {
+  position: absolute;
+  right: 12px;
+  pointer-events: none;
+  color: var(--text-secondary);
+}
+
+/* FILTRAR BUTTON */
+.publicaciones-page .btn-filtrar {
+  margin-top: auto;
+  padding: 14px;
+  background-color: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.publicaciones-page .btn-filtrar:hover {
+  background-color: var(--accent-hover);
+}
+
+.publicaciones-page .btn-filtrar:active {
+  transform: scale(0.98);
 }
 
 /* CONTENT */
 .publicaciones-page .page-content {
-  padding: 36px 40px 40px;
+  padding: 18px 40px 40px;
 }
 
 .publicaciones-page .page-title {
   text-align: center;
   font-size: 2.6rem;
   font-weight: 400;
-  color: #999;
-  margin-bottom: 32px;
+  color: var(--text-primary);
+  margin-bottom: 20px;
   font-family: 'DM Serif Display', serif;
   letter-spacing: 0.01em;
 }
@@ -26,21 +158,21 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
-  margin-bottom: 36px;
+  margin-bottom: 28px;
 }
 
 .publicaciones-page .search-wrapper {
   position: relative;
   width: 100%;
-  max-width: 580px;
+  max-width: 620px;
 }
 
 .publicaciones-page .search-icon {
   position: absolute;
-  left: 20px;
+  left: 22px;
   top: 50%;
   transform: translateY(-50%);
-  color: #aaa;
+  color: rgba(255,255,255,0.85);
   pointer-events: none;
   display: flex;
   align-items: center;
@@ -48,73 +180,74 @@
 
 .publicaciones-page .search-input {
   width: 100%;
-  padding: 15px 20px 15px 54px;
-  background: #e8e8e8;
+  padding: 16px 22px 16px 56px;
+  background: var(--accent);
   border: none;
   border-radius: 50px;
-  font-size: 1rem;
-  color: #555;
+  font-size: 1.05rem;
+  color: #ffffff;
   outline: none;
   font-family: inherit;
   transition: background 0.15s;
 }
 
 .publicaciones-page .search-input::placeholder {
-  color: #aaa;
+  color: rgba(255,255,255,0.85);
 }
 
 .publicaciones-page .search-input:focus {
-  background: #e0e0e0;
+  background: var(--accent-hover);
 }
 
 .publicaciones-page .btn-add {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  background-color: #d4d4d4;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background-color: var(--accent);
   border: none;
   cursor: pointer;
-  font-size: 1.7rem;
-  line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: #333;
-  transition: background-color 0.15s;
-  font-weight: 300;
+  color: #ffffff;
+  transition: background-color 0.15s, transform 0.1s;
 }
 
 .publicaciones-page .btn-add:hover {
-  background-color: #bbb;
+  background-color: var(--accent-hover);
+}
+
+.publicaciones-page .btn-add:active {
+  transform: scale(0.96);
 }
 
 /* CARDS GRID */
 .publicaciones-page .cards-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
 }
 
 /* CARD */
 .pub-card {
-  background-color: #f0f0f0;
+  background-color: var(--accent);
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid #e2e2e2;
   cursor: pointer;
+  box-shadow: 0 3px 10px rgba(20,40,90,0.12);
   transition: transform 0.15s, box-shadow 0.15s;
 }
 
 .pub-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 24px rgba(47,107,255,0.28);
 }
 
 .pub-card__image {
   width: 100%;
-  aspect-ratio: 4 / 3;
-  background-color: #e2e2e2;
+  aspect-ratio: 5 / 2;
+  background-color: #c9ccd1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,22 +262,22 @@
 
 .pub-card__house-icon {
   color: #1a1a1a;
-  width: 72px;
-  height: 72px;
+  width: 54px;
+  height: 54px;
 }
 
 .pub-card__info {
-  padding: 12px 16px 14px;
-  border-top: 1px solid #ddd;
+  padding: 14px 18px 16px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+  color: #ffffff;
 }
 
 .pub-card__title {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #1a1a1a;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #ffffff;
 }
 
 .pub-card__location {
@@ -153,20 +286,34 @@
   justify-content: flex-end;
   gap: 4px;
   font-size: 0.85rem;
-  color: #555;
+  color: rgba(255,255,255,0.9);
 }
 
-@media (max-width: 1024px) {
-  .publicaciones-page .cards-grid {
-    grid-template-columns: repeat(3, 1fr);
+.publicaciones-page .empty-state {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-top: 60px;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .publicaciones-page .page-body {
+    grid-template-columns: 1fr;
   }
-}
-
-@media (max-width: 700px) {
-  .publicaciones-page .cards-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .publicaciones-page .filters-sidebar {
+    min-height: auto;
   }
   .publicaciones-page .page-content {
     padding: 24px 16px;
+  }
+  .publicaciones-page .cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .publicaciones-page .cards-grid {
+    grid-template-columns: 1fr;
   }
 }

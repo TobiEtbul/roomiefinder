@@ -1,8 +1,15 @@
 .nueva-pub-page {
+  --bg: #e9eaec;
+  --card-bg: #ffffff;
+  --border-blue: #cdd8ea;
+  --text-primary: #1b2a4a;
+  --text-muted: #8b97ac;
+  --accent: #2f6bff;
+  --accent-hover: #1d54e0;
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: #e8e8e8;
+  background-color: var(--bg);
   min-height: 100vh;
-  color: #2a2a2a;
+  color: var(--text-primary);
 }
 
 .nueva-pub-page .page-content {
@@ -13,7 +20,7 @@
   font-family: 'DM Serif Display', serif;
   font-size: 2.2rem;
   font-weight: 400;
-  color: #999;
+  color: var(--text-primary);
   margin-bottom: 28px;
   letter-spacing: 0.01em;
 }
@@ -28,22 +35,22 @@
 
 /* FORM CARD */
 .nueva-pub-page .form-card {
-  background: #f5f5f5;
+  background: var(--card-bg);
   border-radius: 20px;
   padding: 28px 28px 32px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 16px rgba(20,40,90,0.08);
 }
 
 /* INPUT BASE */
 .nueva-pub-page .input-field {
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #ddd;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border-blue);
   border-radius: 12px;
   padding: 14px 18px;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.95rem;
-  color: #2a2a2a;
+  color: var(--text-primary);
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
   appearance: none;
@@ -51,12 +58,12 @@
 }
 
 .nueva-pub-page .input-field::placeholder {
-  color: #aaa;
+  color: var(--text-muted);
 }
 
 .nueva-pub-page .input-field:focus {
-  border-color: #999;
-  box-shadow: 0 0 0 3px rgba(150,150,150,0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(47,107,255,0.15);
 }
 
 .nueva-pub-page .form-group {
@@ -80,7 +87,7 @@
 .nueva-pub-page .select-wrapper .input-field {
   cursor: pointer;
   padding-right: 40px;
-  color: #666;
+  color: var(--text-primary);
 }
 
 .nueva-pub-page .select-arrow {
@@ -89,19 +96,68 @@
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  color: #888;
+  color: var(--text-muted);
+}
+
+/* PRICE FIELD ($ ... USD) */
+.nueva-pub-page .price-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border-blue);
+  border-radius: 12px;
+  padding: 14px 18px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.nueva-pub-page .price-field:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(47,107,255,0.15);
+}
+
+.nueva-pub-page .price-field__prefix,
+.nueva-pub-page .price-field__suffix {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.nueva-pub-page .price-field__input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.nueva-pub-page .price-field__input::placeholder {
+  color: var(--text-muted);
+}
+
+.nueva-pub-page .price-field__input::-webkit-inner-spin-button,
+.nueva-pub-page .price-field__input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* TEXTAREA */
 .nueva-pub-page .textarea {
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #ddd;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border-blue);
   border-radius: 12px;
   padding: 14px 18px;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.95rem;
-  color: #2a2a2a;
+  color: var(--text-primary);
   outline: none;
   resize: vertical;
   line-height: 1.8;
@@ -110,12 +166,12 @@
 }
 
 .nueva-pub-page .textarea::placeholder {
-  color: #aaa;
+  color: var(--text-muted);
 }
 
 .nueva-pub-page .textarea:focus {
-  border-color: #999;
-  box-shadow: 0 0 0 3px rgba(150,150,150,0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(47,107,255,0.15);
 }
 
 /* PUBLISH BUTTON */
@@ -124,19 +180,20 @@
   width: 100%;
   margin-top: 24px;
   padding: 15px;
-  background: #3a3a3a;
+  background: var(--accent);
   color: #fff;
   border: none;
   border-radius: 50px;
-  font-family: 'DM Serif Display', serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
 }
 
 .nueva-pub-page .btn-publicar:hover {
-  background: #222;
+  background: var(--accent-hover);
 }
 
 .nueva-pub-page .btn-publicar:active {
@@ -144,13 +201,13 @@
 }
 
 .nueva-pub-page .btn-publicar:disabled {
-  background: #aaa;
+  background: #a9b6d4;
   cursor: not-allowed;
 }
 
 /* IMAGE CARD */
 .nueva-pub-page .image-card {
-  background: #f0f0f0;
+  background: var(--card-bg);
   border-radius: 20px;
   min-height: 420px;
   display: flex;
@@ -159,25 +216,25 @@
   justify-content: center;
   gap: 14px;
   cursor: pointer;
-  border: 2px dashed #d0d0d0;
+  border: 2px dashed var(--border-blue);
   transition: border-color 0.2s, background 0.2s;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 16px rgba(20,40,90,0.08);
   overflow: hidden;
   position: relative;
 }
 
 .nueva-pub-page .image-card:hover {
-  border-color: #aaa;
-  background: #e8e8e8;
+  border-color: var(--accent);
+  background: #f4f8ff;
 }
 
 .nueva-pub-page .image-card .plus-icon {
-  color: #888;
+  color: var(--accent);
 }
 
 .nueva-pub-page .image-card .add-label {
   font-size: 1.3rem;
-  color: #888;
+  color: var(--text-muted);
   font-weight: 400;
   text-align: center;
   line-height: 1.3;
@@ -217,7 +274,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #555;
+  background: var(--accent);
   color: white;
   border: none;
   font-size: 1.4rem;
@@ -229,7 +286,7 @@
 }
 
 .nueva-pub-page .add-more-btn:hover {
-  background: #333;
+  background: var(--accent-hover);
 }
 
 @media (max-width: 768px) {

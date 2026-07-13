@@ -1,8 +1,14 @@
 .detalle-page {
+  --card-bg: #ffffff;
+  --border-blue: #c3d0e8;
+  --text-primary: #1b2a4a;
+  --text-muted: #93a1bd;
+  --accent: #2f6bff;
+  --accent-hover: #1d54e0;
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: #e8e8e8;
+  background-color: #e9eaec;
   min-height: 100vh;
-  color: #2a2a2a;
+  color: var(--text-primary);
 }
 
 .detalle-page .page-content {
@@ -19,13 +25,45 @@
 
 /* LEFT CARD */
 .detalle-page .left-card {
-  background: #f0f0f0;
+  background: var(--card-bg);
   border-radius: 20px;
   padding: 22px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 16px rgba(20,40,90,0.08);
   display: flex;
   flex-direction: column;
   gap: 18px;
+}
+
+/* POSTER (avatar + nombre) */
+.detalle-page .poster {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.detalle-page .poster__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #d7e3f7;
+  color: #0c1a3c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.detalle-page .poster__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detalle-page .poster__name {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .detalle-page .detalle-image {
@@ -106,39 +144,23 @@
   color: #1a1a1a;
 }
 
-.detalle-page .persona-box {
-  background: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 14px;
-  min-height: 200px;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.detalle-page .persona-placeholder {
-  color: #999;
-  font-size: 1.05rem;
-  line-height: 1.5;
-}
-
 .detalle-page .btn-inscripcion {
   width: 100%;
   padding: 15px;
-  background: #6f6f6f;
+  background: var(--accent);
   color: #fff;
   border: none;
   border-radius: 12px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
+  margin-top: auto;
 }
 
 .detalle-page .btn-inscripcion:hover {
-  background: #585858;
+  background: var(--accent-hover);
 }
 
 .detalle-page .btn-inscripcion:active {
@@ -147,18 +169,18 @@
 
 /* RIGHT CARD */
 .detalle-page .right-card {
-  background: #ececec;
+  background: var(--card-bg);
   border-radius: 20px;
   padding: 28px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 16px rgba(20,40,90,0.08);
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 }
 
 .detalle-page .field {
-  background: #ffffff;
-  border: 1px solid #ccc;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border-blue);
   border-radius: 14px;
   padding: 18px 22px;
 }
@@ -173,26 +195,36 @@
 }
 
 .detalle-page .field-value {
-  font-size: 1.15rem;
-  color: #2a2a2a;
+  font-size: 1.2rem;
+  color: var(--text-primary);
 }
 
 .detalle-page .field-empty {
-  font-size: 1.15rem;
-  color: #aaa;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+}
+
+/* Título (Nombre) más grande */
+.detalle-page .field--title {
+  padding: 24px 24px;
+}
+
+.detalle-page .field--title .field-value,
+.detalle-page .field--title .field-empty {
+  font-size: 1.9rem;
 }
 
 .detalle-page .field--description {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-height: 220px;
+  min-height: 260px;
 }
 
 .detalle-page .field-label {
-  font-size: 1.15rem;
-  color: #2a2a2a;
-  font-weight: 500;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  font-weight: 400;
 }
 
 .detalle-page .field--description .field-value {
@@ -212,17 +244,18 @@
 .detalle-page .btn-volver {
   margin-top: 20px;
   padding: 12px 28px;
-  background: #6f6f6f;
+  background: var(--accent);
   color: #fff;
   border: none;
   border-radius: 50px;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .detalle-page .btn-volver:hover {
-  background: #585858;
+  background: var(--accent-hover);
 }
 
 /* LIGHTBOX */
