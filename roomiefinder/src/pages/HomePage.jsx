@@ -150,10 +150,10 @@ export default function HomePage() {
                 onChange={e => setFiltro('genero', e.target.value)}
               >
                 <option value="">Genero</option>
-                <option value="sin-preferencia">Sin preferencia</option>
+                <option value="indiferente">Sin preferencia</option>
                 <option value="masculino">Masculino</option>
                 <option value="femenino">Femenino</option>
-                <option value="mixto">Mixto</option>
+                <option value="no_binario">No binario</option>
               </select>
               <ChevronIcon />
             </div>

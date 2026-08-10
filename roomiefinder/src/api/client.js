@@ -27,8 +27,8 @@ export async function apiFetch(path, options = {}) {
   let res
   try {
     res = await fetch(`${BASE_URL}${path}`, {
-      headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
       ...options,
+      headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
     })
   } catch {
     // Falla de red o CORS (el servidor no responde / no permite el origen).

@@ -55,9 +55,10 @@ export default function PerfilPage() {
     ? `${usuario.nombre}${usuario.apellido ? ' ' + usuario.apellido : ''}`
     : 'Nombre Usuario'
 
-  // Publicaciones creadas por el usuario.
-  // TODO: cuando haya DB, filtrar por el id del usuario logueado.
-  const misPublicaciones = publicaciones
+  // Publicaciones creadas por el usuario logueado.
+  const misPublicaciones = usuario
+    ? publicaciones.filter(p => p.propietario_id === usuario.id)
+    : []
 
   // Cierra el menú al hacer click en cualquier otro lado.
   useEffect(() => {
@@ -73,10 +74,14 @@ export default function PerfilPage() {
     navigate(`/editar-publicacion/${id}`)
   }
 
-  function handleEliminar(e, id) {
+  async function handleEliminar(e, id) {
     e.stopPropagation()
     setMenuAbierto(null)
-    eliminarPublicacion(id)
+    try {
+      await eliminarPublicacion(id)
+    } catch {
+      // Si falla el borrado, la publicación queda como estaba.
+    }
   }
 
   return (

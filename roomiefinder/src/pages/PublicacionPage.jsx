@@ -12,10 +12,10 @@ const PRECIO_LABELS = {
 }
 
 const GENERO_LABELS = {
-  'sin-preferencia': 'Sin preferencia',
+  'indiferente': 'Sin preferencia',
   'masculino': 'Masculino',
   'femenino': 'Femenino',
-  'mixto': 'Mixto',
+  'no_binario': 'No binario',
 }
 
 function HouseIcon() {

@@ -36,6 +36,8 @@ export default function EditarPublicacionPage() {
   const [images, setImages]       = useState(
     post ? (post.images?.length ? post.images : (post.image ? [post.image] : [])) : []
   )
+  const [error, setError]         = useState('')
+  const [guardando, setGuardando] = useState(false)
 
   function handleImageSelect(e) {
     const files = Array.from(e.target.files)
@@ -44,18 +46,28 @@ export default function EditarPublicacionPage() {
     e.target.value = ''
   }
 
-  function handleGuardar() {
+  async function handleGuardar() {
     if (!nombre.trim()) return
-    actualizarPublicacion(post.id, {
-      title: nombre.trim(),
-      location: ubicacion.trim() || 'Ubicacion',
-      precio,
-      genero,
-      descripcion,
-      image: images[0] || null,
-      images,
-    })
-    navigate(`/publicacion/${post.id}`)
+    setError('')
+    setGuardando(true)
+    try {
+      await actualizarPublicacion(post.id, {
+        title: nombre.trim(),
+        location: ubicacion.trim() || 'Ubicacion',
+        precio,
+        genero,
+        descripcion,
+        image: images[0] || null,
+        images,
+      })
+      navigate(`/publicacion/${post.id}`)
+    } catch (err) {
+      setError(err.status === 401 || err.status === 403
+        ? 'No tenés permiso para editar esta publicación.'
+        : err.message || 'No se pudo guardar la publicación.')
+    } finally {
+      setGuardando(false)
+    }
   }
 
   if (!post) {
@@ -118,10 +130,10 @@ export default function EditarPublicacionPage() {
                   onChange={e => setGenero(e.target.value)}
                 >
                   <option value="" disabled>Genero de preferencia</option>
-                  <option value="sin-preferencia">Sin preferencia</option>
+                  <option value="indiferente">Sin preferencia</option>
                   <option value="masculino">Masculino</option>
                   <option value="femenino">Femenino</option>
-                  <option value="mixto">Mixto</option>
+                  <option value="no_binario">No binario</option>
                 </select>
                 <ChevronIcon />
               </div>
@@ -147,12 +159,14 @@ export default function EditarPublicacionPage() {
               />
             </div>
 
+            {error && <p className="pub-error">{error}</p>}
+
             <button
               className="btn-publicar"
               onClick={handleGuardar}
-              disabled={!canSave}
+              disabled={!canSave || guardando}
             >
-              Guardar cambios
+              {guardando ? 'Guardando…' : 'Guardar cambios'}
             </button>
           </section>
 

@@ -31,6 +31,8 @@ export default function CrearPublicacionPage() {
   const [ubicacion, setUbicacion] = useState('')
   const [descripcion, setDescripcion] = useState('')
   const [images, setImages]       = useState([])
+  const [error, setError]         = useState('')
+  const [enviando, setEnviando]   = useState(false)
 
   function handleImageSelect(e) {
     const files = Array.from(e.target.files)
@@ -39,18 +41,28 @@ export default function CrearPublicacionPage() {
     e.target.value = ''
   }
 
-  function handlePublicar() {
+  async function handlePublicar() {
     if (!nombre.trim()) return
-    agregarPublicacion({
-      title: nombre.trim(),
-      location: ubicacion.trim() || 'Ubicacion',
-      precio,
-      genero,
-      descripcion,
-      image: images[0] || null,
-      images,
-    })
-    navigate('/home')
+    setError('')
+    setEnviando(true)
+    try {
+      await agregarPublicacion({
+        title: nombre.trim(),
+        location: ubicacion.trim() || 'Ubicacion',
+        precio,
+        genero,
+        descripcion,
+        image: images[0] || null,
+        images,
+      })
+      navigate('/home')
+    } catch (err) {
+      setError(err.status === 401 || err.status === 403
+        ? 'Tenés que iniciar sesión para publicar.'
+        : err.message || 'No se pudo crear la publicación.')
+    } finally {
+      setEnviando(false)
+    }
   }
 
   const canPublish = nombre.trim().length > 0
@@ -98,10 +110,10 @@ export default function CrearPublicacionPage() {
                   onChange={e => setGenero(e.target.value)}
                 >
                   <option value="" disabled>Genero de preferencia</option>
-                  <option value="sin-preferencia">Sin preferencia</option>
+                  <option value="indiferente">Sin preferencia</option>
                   <option value="masculino">Masculino</option>
                   <option value="femenino">Femenino</option>
-                  <option value="mixto">Mixto</option>
+                  <option value="no_binario">No binario</option>
                 </select>
                 <ChevronIcon />
               </div>
@@ -127,12 +139,14 @@ export default function CrearPublicacionPage() {
               />
             </div>
 
+            {error && <p className="pub-error">{error}</p>}
+
             <button
               className="btn-publicar"
               onClick={handlePublicar}
-              disabled={!canPublish}
+              disabled={!canPublish || enviando}
             >
-              Publicar
+              {enviando ? 'Publicando…' : 'Publicar'}
             </button>
           </section>
 
