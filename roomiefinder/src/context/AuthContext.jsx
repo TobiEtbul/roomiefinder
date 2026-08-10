@@ -25,11 +25,23 @@ export function AuthProvider({ children }) {
     else localStorage.removeItem(TOKEN_KEY)
   }
 
-  // Registra el usuario en el backend y lo deja logueado.
-  async function registrar(datos) {
-    const u = await authApi.registrarUsuario(datos)
-    guardar(u, null)
-    return u
+  // Registra el usuario y lo deja logueado.
+  // `extras` (descripcion, preferencias) no los acepta el registro, así que
+  // los guardamos con un PUT usando el token que devuelve el login.
+  async function registrar(datos, extras = {}) {
+    const creado = await authApi.registrarUsuario(datos)
+    const { token: nuevoToken, user_id } = await authApi.login(datos.email, datos.password)
+
+    let usuarioFinal = creado
+    const cambios = {}
+    if (extras.descripcion) cambios.descripcion = extras.descripcion
+    if (extras.preferencias) cambios.preferencias = extras.preferencias
+    if (Object.keys(cambios).length > 0) {
+      usuarioFinal = await authApi.actualizarUsuario(user_id, cambios, nuevoToken)
+    }
+
+    guardar(usuarioFinal, nuevoToken)
+    return usuarioFinal
   }
 
   // Valida credenciales, usa el user_id que devuelve el login para traer
@@ -41,12 +53,19 @@ export function AuthProvider({ children }) {
     return u
   }
 
+  // Actualiza el perfil en el backend y refresca el usuario guardado.
+  async function actualizarPerfil(cambios) {
+    const u = await authApi.actualizarUsuario(usuario.id, cambios, token)
+    guardar(u, token)
+    return u
+  }
+
   function cerrarSesion() {
     guardar(null, null)
   }
 
   return (
-    <AuthContext.Provider value={{ usuario, token, registrar, iniciarSesion, cerrarSesion }}>
+    <AuthContext.Provider value={{ usuario, token, registrar, iniciarSesion, actualizarPerfil, cerrarSesion }}>
       {children}
     </AuthContext.Provider>
   )

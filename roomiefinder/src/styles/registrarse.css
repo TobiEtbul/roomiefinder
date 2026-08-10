@@ -29,6 +29,16 @@
   overflow: hidden;
 }
 
+/* La pantalla de editar perfil usa navbar y puede ser más alta: no recortar. */
+.register-page.editar-perfil {
+  overflow: visible;
+}
+
+.register-page .btn-continuar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* HEADER */
 .register-page .page-header {
   background-color: var(--header-bg);

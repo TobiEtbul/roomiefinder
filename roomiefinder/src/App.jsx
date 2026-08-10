@@ -9,6 +9,7 @@ import CrearPublicacionPage from './pages/CrearPublicacionPage'
 import EditarPublicacionPage from './pages/EditarPublicacionPage'
 import PublicacionPage from './pages/PublicacionPage'
 import PerfilPage from './pages/PerfilPage'
+import EditarPerfilPage from './pages/EditarPerfilPage'
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
           <Route path="/editar-publicacion/:id" element={<EditarPublicacionPage />} />
           <Route path="/publicacion/:id" element={<PublicacionPage />} />
           <Route path="/perfil" element={<PerfilPage />} />
+          <Route path="/editar-perfil" element={<EditarPerfilPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>

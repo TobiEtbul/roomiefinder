@@ -24,6 +24,15 @@ export function obtenerUsuario(id) {
   return apiFetch(`/users/${id}`)
 }
 
+// Actualiza el perfil del usuario (requiere token). Campos opcionales (UserUpdate).
+export function actualizarUsuario(id, datos, token) {
+  return apiFetch(`/users/${id}`, {
+    method: 'PUT',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: JSON.stringify(datos),
+  })
+}
+
 // Trae la lista de usuarios.
 export function listarUsuarios() {
   return apiFetch('/users/')

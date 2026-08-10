@@ -87,9 +87,14 @@ export default function RegisterPage() {
       genero: GENERO_MAP[genero] || 'prefiero_no_decir',
     }
 
+    const extras = {
+      descripcion: descripcion.trim(),
+      preferencias: tags.filter(t => t.active).map(t => t.label).join(', '),
+    }
+
     setEnviando(true)
     try {
-      await registrar(payload)
+      await registrar(payload, extras)
       navigate('/home')
     } catch (err) {
       setError(err.message || 'No se pudo crear la cuenta.')
