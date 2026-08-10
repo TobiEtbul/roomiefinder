@@ -146,6 +146,14 @@
   color: var(--accent);
 }
 
+/* ERROR MESSAGE */
+.login-page .auth-error {
+  color: #d13438;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 4px 0 0;
+}
+
 /* ENTRAR BUTTON */
 .login-page .btn-entrar {
   display: block;

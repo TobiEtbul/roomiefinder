@@ -2,15 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AppNavbar from '../components/AppNavbar'
 import { usePublicaciones } from '../context/PublicacionesContext'
+import { useAuth } from '../context/AuthContext'
 import '../styles/perfil.css'
-
-// Datos mock del usuario logueado.
-// TODO: reemplazar por el usuario real cuando esté la base de datos.
-const USUARIO_MOCK = {
-  nombre: 'Nombre Usuario',
-  foto: null,
-  descripcion: 'Descripción personal del usuario. Gustos, preferencias y costumbres.',
-}
 
 const PRECIO_LABELS = {
   '0-500': '$0 – $500 USD',
@@ -54,8 +47,13 @@ function EditIcon() {
 export default function PerfilPage() {
   const navigate = useNavigate()
   const { publicaciones, eliminarPublicacion } = usePublicaciones()
+  const { usuario } = useAuth()
   const [tab, setTab] = useState('publicacion')
   const [menuAbierto, setMenuAbierto] = useState(null)
+
+  const nombreUsuario = usuario
+    ? `${usuario.nombre}${usuario.apellido ? ' ' + usuario.apellido : ''}`
+    : 'Nombre Usuario'
 
   // Publicaciones creadas por el usuario.
   // TODO: cuando haya DB, filtrar por el id del usuario logueado.
@@ -91,13 +89,13 @@ export default function PerfilPage() {
           {/* SIDEBAR */}
           <aside className="perfil-sidebar">
             <div className="perfil-avatar">
-              {USUARIO_MOCK.foto
-                ? <img src={USUARIO_MOCK.foto} alt={USUARIO_MOCK.nombre} />
+              {usuario?.foto_perfil_url
+                ? <img src={usuario.foto_perfil_url} alt={nombreUsuario} />
                 : <PersonIcon />
               }
             </div>
 
-            <h2 className="perfil-nombre">{USUARIO_MOCK.nombre}</h2>
+            <h2 className="perfil-nombre">{nombreUsuario}</h2>
 
             <button className="btn-editar" onClick={() => navigate('/editar-perfil')}>
               <EditIcon /> Editar Perfil

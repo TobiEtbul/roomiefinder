@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import '../styles/app-navbar.css'
 
 function PersonIcon({ size = 32 }) {
@@ -31,10 +32,21 @@ function MenuIcon() {
 
 export default function AppNavbar() {
   const location = useLocation()
+  const navigate = useNavigate()
+  const { usuario, cerrarSesion } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef(null)
 
   const isActive = (path) => location.pathname === path
+  const nombreMostrado = usuario
+    ? `${usuario.nombre}${usuario.apellido ? ' ' + usuario.apellido : ''}`
+    : 'Nombre Persona'
+
+  function handleCerrarSesion() {
+    setMenuOpen(false)
+    cerrarSesion()
+    navigate('/iniciar-sesion')
+  }
 
   // Cerrar el menú al hacer clic fuera
   useEffect(() => {
@@ -56,7 +68,7 @@ export default function AppNavbar() {
           <span className="app-navbar__avatar">
             <PersonIcon size={26} />
           </span>
-          <span className="app-navbar__username">Nombre<br />Persona</span>
+          <span className="app-navbar__username">{nombreMostrado}</span>
         </Link>
 
         <button type="button" className="app-navbar__icon-btn" aria-label="Notificaciones">
@@ -97,6 +109,15 @@ export default function AppNavbar() {
               >
                 Perfil
               </Link>
+              {usuario && (
+                <button
+                  type="button"
+                  className="app-navbar__dropdown-item app-navbar__dropdown-item--logout"
+                  onClick={handleCerrarSesion}
+                >
+                  Cerrar sesión
+                </button>
+              )}
             </nav>
           )}
         </div>

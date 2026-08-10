@@ -1,7 +1,17 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import '../styles/registrarse.css'
 
 const INITIAL_TAGS = ['Ordenado', 'Sociable', 'Tranquilo', 'Introvertido', 'Divertido']
+
+// El backend espera el género como enum; mapeamos desde las opciones del form.
+const GENERO_MAP = {
+  'Masculino': 'masculino',
+  'Femenino': 'femenino',
+  'No binario': 'no_binario',
+  'Prefiero no decir': 'prefiero_no_decir',
+}
 
 export default function RegisterPage() {
   useEffect(() => {
@@ -23,7 +33,11 @@ export default function RegisterPage() {
   const [terminos, setTerminos] = useState(false)
   const [descripcion, setDescripcion] = useState('')
   const [modalCampos, setModalCampos] = useState(null)
+  const [error, setError] = useState('')
+  const [enviando, setEnviando] = useState(false)
   const fileInputRef = useRef(null)
+  const navigate = useNavigate()
+  const { registrar } = useAuth()
 
   function handleFotoClick() {
     fileInputRef.current.click()
@@ -36,7 +50,8 @@ export default function RegisterPage() {
     setFotoPerfil(url)
   }
 
-  function handleContinuar() {
+  async function handleContinuar() {
+    setError('')
     const camposFaltantes = []
     if (!fotoPerfil) camposFaltantes.push('Foto de perfil')
     if (!nombre.trim()) camposFaltantes.push('Nombre completo')
@@ -53,6 +68,34 @@ export default function RegisterPage() {
       return
     }
 
+    // Partimos "Nombre completo" en nombre + apellido (el backend los pide separados).
+    const partes = nombre.trim().split(/\s+/)
+    const nombreN = partes[0]
+    const apellidoN = partes.slice(1).join(' ') || partes[0]
+
+    // Fecha DD/MM/AAAA -> YYYY-MM-DD que espera el backend.
+    const [dd, mm, aaaa] = fecha.split('/')
+    const fechaISO = `${aaaa}-${mm}-${dd}`
+
+    const payload = {
+      nombre: nombreN,
+      apellido: apellidoN,
+      dni: dni.trim(),
+      email: email.trim(),
+      password,
+      fecha_nacimiento: fechaISO,
+      genero: GENERO_MAP[genero] || 'prefiero_no_decir',
+    }
+
+    setEnviando(true)
+    try {
+      await registrar(payload)
+      navigate('/home')
+    } catch (err) {
+      setError(err.message || 'No se pudo crear la cuenta.')
+    } finally {
+      setEnviando(false)
+    }
   }
 
   function handleFechaChange(e) {
@@ -222,7 +265,11 @@ export default function RegisterPage() {
             <label htmlFor="terms" className="checkbox-label">Acepto los terminos y condiciones</label>
           </div>
 
-          <button className="btn-continuar" onClick={handleContinuar}>Continuar</button>
+          {error && <p className="auth-error">{error}</p>}
+
+          <button className="btn-continuar" onClick={handleContinuar} disabled={enviando}>
+            {enviando ? 'Creando cuenta…' : 'Continuar'}
+          </button>
         </section>
 
         <aside className="right-column">

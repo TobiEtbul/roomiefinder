@@ -131,6 +131,23 @@
   color: #ffffff;
 }
 
+/* botón (Cerrar sesión) dentro del dropdown */
+button.app-navbar__dropdown-item {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.app-navbar__dropdown-item--logout {
+  color: #d13438;
+}
+
+.app-navbar__dropdown-item--logout:hover {
+  background-color: #fbeae8;
+}
+
 @media (max-width: 600px) {
   .app-navbar {
     padding: 12px 18px;

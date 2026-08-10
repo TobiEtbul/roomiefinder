@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import '../styles/iniciar-sesion.css'
 
 function EyeIcon({ open }) {
@@ -18,7 +19,33 @@ function EyeIcon({ open }) {
 }
 
 export default function LoginPage() {
+  const navigate = useNavigate()
+  const { iniciarSesion } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [enviando, setEnviando] = useState(false)
+
+  async function handleEntrar(e) {
+    e.preventDefault()
+    setError('')
+    if (!email.trim() || !password.trim()) {
+      setError('Completá email y contraseña.')
+      return
+    }
+    setEnviando(true)
+    try {
+      await iniciarSesion(email.trim(), password)
+      navigate('/home')
+    } catch (err) {
+      setError(err.status === 401 || err.status === 400
+        ? 'Email o contraseña incorrectos.'
+        : err.message || 'No se pudo iniciar sesión.')
+    } finally {
+      setEnviando(false)
+    }
+  }
 
   return (
     <div className="login-page">
@@ -28,7 +55,7 @@ export default function LoginPage() {
 
       <main className="container">
 
-        <section className="card">
+        <form className="card" onSubmit={handleEntrar}>
 
           <div className="form-group">
             <label htmlFor="email">Correo electronico</label>
@@ -37,6 +64,8 @@ export default function LoginPage() {
               type="email"
               className="input-field"
               placeholder="amandaperez@gmail.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
             />
           </div>
 
@@ -48,6 +77,8 @@ export default function LoginPage() {
                 type={showPassword ? 'text' : 'password'}
                 className="input-field"
                 placeholder="**********"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
               />
               <button
                 type="button"
@@ -61,7 +92,11 @@ export default function LoginPage() {
             <button type="button" className="forgot-password">¿Olvidaste tu contraseña?</button>
           </div>
 
-          <button className="btn-entrar">Entrar</button>
+          {error && <p className="auth-error">{error}</p>}
+
+          <button className="btn-entrar" type="submit" disabled={enviando}>
+            {enviando ? 'Entrando…' : 'Entrar'}
+          </button>
 
           <button type="button" className="btn-social">
             <img src="/google.png" alt="Google" className="btn-social__icon" />
@@ -76,7 +111,7 @@ export default function LoginPage() {
           <p className="register-link">
             ¿No tienes cuenta? <Link to="/registrarse">Registrate</Link>
           </p>
-        </section>
+        </form>
 
         <aside className="card right-panel">
           <span>Foto?</span>

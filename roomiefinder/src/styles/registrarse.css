@@ -258,6 +258,19 @@
   cursor: pointer;
 }
 
+/* ERROR MESSAGE */
+.register-page .auth-error {
+  color: #d13438;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 0 0 10px;
+}
+
+.register-page .btn-continuar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* BUTTON */
 .register-page .btn-continuar {
   display: block;

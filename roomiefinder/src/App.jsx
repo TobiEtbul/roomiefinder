@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
 import { PublicacionesProvider } from './context/PublicacionesContext'
 import StartPage from './pages/StartPage'
 import LoginPage from './pages/LoginPage'
@@ -11,8 +12,9 @@ import PerfilPage from './pages/PerfilPage'
 
 export default function App() {
   return (
-    <PublicacionesProvider>
-      <BrowserRouter>
+    <AuthProvider>
+      <PublicacionesProvider>
+        <BrowserRouter>
         <Routes>
           <Route path="/" element={<StartPage />} />
           <Route path="/iniciar-sesion" element={<LoginPage />} />
@@ -23,8 +25,9 @@ export default function App() {
           <Route path="/publicacion/:id" element={<PublicacionPage />} />
           <Route path="/perfil" element={<PerfilPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </PublicacionesProvider>
+          </Routes>
+        </BrowserRouter>
+      </PublicacionesProvider>
+    </AuthProvider>
   )
 }
