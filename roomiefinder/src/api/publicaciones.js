@@ -41,3 +41,12 @@ export function eliminarPublicacion(id, token) {
     headers: authHeaders(token),
   })
 }
+
+// Adjunta una foto (URL de Cloudinary) a una publicación.
+export function agregarFoto(publicacionId, url, orden, token) {
+  return apiFetch(`/publicaciones/${publicacionId}/fotos`, {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify({ url, orden }),
+  })
+}

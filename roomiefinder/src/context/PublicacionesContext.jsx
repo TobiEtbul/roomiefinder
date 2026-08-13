@@ -1,11 +1,18 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import * as pubApi from '../api/publicaciones'
+import { subirImagen } from '../api/uploads'
 import { useAuth } from './AuthContext'
 
 const PublicacionesContext = createContext()
 
 // Traduce una publicación del backend a la forma que usan las pantallas.
 function normalizar(p) {
+  // Solo URLs http(s) válidas. Descartamos rutas locales (file://) que
+  // algunos clientes (mobile) guardaron por error y no cargan en otros lados.
+  const urls = (p.fotos || [])
+    .map(f => f.url)
+    .filter(u => /^https?:\/\//i.test(u))
+
   return {
     id: p.id,
     propietario_id: p.propietario_id,
@@ -16,8 +23,8 @@ function normalizar(p) {
     descripcion: p.descripcion || '',
     estado: p.estado,
     created_at: p.created_at,
-    image: p.fotos?.[0]?.url || null,
-    images: (p.fotos || []).map(f => f.url),
+    image: urls[0] || null,
+    images: urls,
   }
 }
 
@@ -54,10 +61,27 @@ export function PublicacionesProvider({ children }) {
     recargar()
   }, [recargar])
 
+  // Sube los archivos y los adjunta a la publicación. Si alguno falla, no
+  // aborta la operación (la publicación ya existe).
+  async function subirYAdjuntar(pubId, archivos = [], ordenInicial = 0) {
+    for (let i = 0; i < archivos.length; i++) {
+      try {
+        const { url } = await subirImagen(archivos[i], token)
+        await pubApi.agregarFoto(pubId, url, ordenInicial + i, token)
+      } catch {
+        // seguimos con las demás imágenes
+      }
+    }
+  }
+
   async function agregarPublicacion(data) {
+    const archivos = data.archivos || []
     const creada = await pubApi.crearPublicacion(aBackend(data), token)
-    setPublicaciones(prev => [normalizar(creada), ...prev])
-    return normalizar(creada)
+    await subirYAdjuntar(creada.id, archivos, 0)
+    // Si hubo fotos, recargamos la publicación para traerlas.
+    const completa = archivos.length ? await pubApi.obtenerPublicacion(creada.id) : creada
+    setPublicaciones(prev => [normalizar(completa), ...prev])
+    return normalizar(completa)
   }
 
   async function eliminarPublicacion(id) {
@@ -66,9 +90,13 @@ export function PublicacionesProvider({ children }) {
   }
 
   async function actualizarPublicacion(id, cambios) {
+    const archivos = cambios.archivos || []
+    const fotosPrevias = cambios.fotosPrevias || 0
     const actualizada = await pubApi.actualizarPublicacion(id, aBackend(cambios), token)
-    setPublicaciones(prev => prev.map(p => (p.id === id ? normalizar(actualizada) : p)))
-    return normalizar(actualizada)
+    await subirYAdjuntar(id, archivos, fotosPrevias)
+    const completa = archivos.length ? await pubApi.obtenerPublicacion(id) : actualizada
+    setPublicaciones(prev => prev.map(p => (p.id === id ? normalizar(completa) : p)))
+    return normalizar(completa)
   }
 
   return (

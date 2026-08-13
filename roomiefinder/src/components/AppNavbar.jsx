@@ -66,7 +66,10 @@ export default function AppNavbar() {
       <div className="app-navbar__right">
         <Link to="/perfil" className="app-navbar__user">
           <span className="app-navbar__avatar">
-            <PersonIcon size={26} />
+            {usuario?.foto_perfil_url
+              ? <img src={usuario.foto_perfil_url} alt={nombreMostrado} />
+              : <PersonIcon size={26} />
+            }
           </span>
           <span className="app-navbar__username">{nombreMostrado}</span>
         </Link>

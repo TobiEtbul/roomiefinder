@@ -1,6 +1,6 @@
 // Cliente HTTP central para hablar con el backend (FastAPI en Vercel).
 // La URL base se puede sobreescribir con la variable de entorno VITE_API_URL.
-const BASE_URL =
+export const BASE_URL =
   import.meta.env.VITE_API_URL || 'https://roomie-finder-bay.vercel.app'
 
 export class ApiError extends Error {

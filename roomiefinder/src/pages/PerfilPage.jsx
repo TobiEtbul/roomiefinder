@@ -141,7 +141,7 @@ export default function PerfilPage() {
                       <div
                         key={post.id}
                         className="perfil-row"
-                        onClick={() => navigate(`/publicacion/${post.id}`)}
+                        onClick={() => navigate(`/publicacion/${post.id}/inscriptos`)}
                       >
                         <div className="perfil-row__image">
                           {img ? <img src={img} alt={post.title} /> : <HouseIcon />}

@@ -2,13 +2,14 @@ import { useState, useRef } from 'react'
 import { useNavigate, Navigate } from 'react-router-dom'
 import AppNavbar from '../components/AppNavbar'
 import { useAuth } from '../context/AuthContext'
+import { subirImagen } from '../api/uploads'
 import '../styles/registrarse.css'
 
 const INITIAL_TAGS = ['Ordenado', 'Sociable', 'Tranquilo', 'Fiestero', 'Divertido']
 
 export default function EditarPerfilPage() {
   const navigate = useNavigate()
-  const { usuario, actualizarPerfil } = useAuth()
+  const { usuario, token, actualizarPerfil } = useAuth()
 
   // Estado inicial precargado con los datos del usuario.
   const [nombre, setNombre] = useState(
@@ -17,6 +18,7 @@ export default function EditarPerfilPage() {
   const [email, setEmail] = useState(usuario?.email || '')
   const [genero, setGenero] = useState(usuario?.genero || '')
   const [fotoPerfil, setFotoPerfil] = useState(usuario?.foto_perfil_url || null)
+  const [fotoFile, setFotoFile] = useState(null)
   const [descripcion, setDescripcion] = useState(usuario?.descripcion || '')
   const [tags, setTags] = useState(() => {
     const prefs = (usuario?.preferencias || '').split(',').map(s => s.trim()).filter(Boolean)
@@ -42,6 +44,7 @@ export default function EditarPerfilPage() {
   function handleFotoChange(e) {
     const file = e.target.files[0]
     if (!file) return
+    setFotoFile(file)
     setFotoPerfil(URL.createObjectURL(file))
   }
 
@@ -86,6 +89,11 @@ export default function EditarPerfilPage() {
 
     setGuardando(true)
     try {
+      // Si eligió una foto nueva, la subimos y guardamos su URL.
+      if (fotoFile) {
+        const { url } = await subirImagen(fotoFile, token)
+        cambios.foto_perfil_url = url
+      }
       await actualizarPerfil(cambios)
       navigate('/perfil')
     } catch (err) {

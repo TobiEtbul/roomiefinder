@@ -36,8 +36,8 @@ export default function CrearPublicacionPage() {
 
   function handleImageSelect(e) {
     const files = Array.from(e.target.files)
-    const urls = files.map(f => URL.createObjectURL(f))
-    setImages(prev => [...prev, ...urls])
+    const nuevas = files.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+    setImages(prev => [...prev, ...nuevas])
     e.target.value = ''
   }
 
@@ -52,8 +52,7 @@ export default function CrearPublicacionPage() {
         precio,
         genero,
         descripcion,
-        image: images[0] || null,
-        images,
+        archivos: images.map(img => img.file),
       })
       navigate('/home')
     } catch (err) {
@@ -172,12 +171,12 @@ export default function CrearPublicacionPage() {
             ) : (
               <>
                 <div className="image-previews">
-                  {images.slice(0, 4).map((url, i) => (
+                  {images.slice(0, 4).map((img, i) => (
                     <div
                       key={i}
                       className={`image-preview-item${images.length === 1 ? ' single' : ''}`}
                     >
-                      <img src={url} alt={`preview ${i + 1}`} />
+                      <img src={img.preview} alt={`preview ${i + 1}`} />
                     </div>
                   ))}
                 </div>

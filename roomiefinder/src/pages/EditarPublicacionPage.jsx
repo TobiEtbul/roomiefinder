@@ -33,16 +33,21 @@ export default function EditarPublicacionPage() {
   const [genero, setGenero]       = useState(post?.genero || '')
   const [ubicacion, setUbicacion] = useState(post?.location || '')
   const [descripcion, setDescripcion] = useState(post?.descripcion || '')
-  const [images, setImages]       = useState(
-    post ? (post.images?.length ? post.images : (post.image ? [post.image] : [])) : []
-  )
+  const [images, setImages]       = useState(() => {
+    const arr = post ? (post.images?.length ? post.images : (post.image ? [post.image] : [])) : []
+    // Fotos existentes: ya tienen url (Cloudinary) y no hay que volver a subirlas.
+    return arr.map(url => ({ file: null, preview: url }))
+  })
   const [error, setError]         = useState('')
   const [guardando, setGuardando] = useState(false)
 
+  // Cantidad de fotos ya guardadas (para no volver a subirlas).
+  const fotosPrevias = images.filter(img => !img.file).length
+
   function handleImageSelect(e) {
     const files = Array.from(e.target.files)
-    const urls = files.map(f => URL.createObjectURL(f))
-    setImages(prev => [...prev, ...urls])
+    const nuevas = files.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+    setImages(prev => [...prev, ...nuevas])
     e.target.value = ''
   }
 
@@ -57,8 +62,8 @@ export default function EditarPublicacionPage() {
         precio,
         genero,
         descripcion,
-        image: images[0] || null,
-        images,
+        archivos: images.filter(img => img.file).map(img => img.file),
+        fotosPrevias,
       })
       navigate(`/publicacion/${post.id}`)
     } catch (err) {
@@ -192,12 +197,12 @@ export default function EditarPublicacionPage() {
             ) : (
               <>
                 <div className="image-previews">
-                  {images.slice(0, 4).map((url, i) => (
+                  {images.slice(0, 4).map((img, i) => (
                     <div
                       key={i}
                       className={`image-preview-item${images.length === 1 ? ' single' : ''}`}
                     >
-                      <img src={url} alt={`preview ${i + 1}`} />
+                      <img src={img.preview} alt={`preview ${i + 1}`} />
                     </div>
                   ))}
                 </div>

@@ -1,0 +1,231 @@
+.inscriptos-page {
+  --bg: #e9eaec;
+  --card-bg: #ffffff;
+  --text-primary: #1b2a4a;
+  --text-muted: #8b97ac;
+  --accent: #2f6bff;
+  --pill-bg: #cfe0fb;
+  --pill-border: #a9c6f5;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg);
+  min-height: 100vh;
+  color: var(--text-primary);
+}
+
+.inscriptos-page .inscriptos-content {
+  padding: 20px 40px 40px;
+}
+
+/* TOPBAR */
+.inscriptos-page .inscriptos-topbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.inscriptos-page .inscriptos-volver {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background-color 0.15s;
+}
+
+.inscriptos-page .inscriptos-volver:hover {
+  background-color: #eef3fd;
+}
+
+.inscriptos-page .inscriptos-pub {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+}
+
+/* LAYOUT */
+.inscriptos-page .inscriptos-body {
+  display: grid;
+  grid-template-columns: 5fr 6fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.inscriptos-page .inscriptos-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inscriptos-page .card {
+  background-color: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: 0 2px 16px rgba(20,40,90,0.08);
+}
+
+/* PERFIL DEL INSCRIPTO */
+.inscriptos-page .persona-card {
+  padding: 28px 32px 32px;
+}
+
+.inscriptos-page .persona-nombre {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.inscriptos-page .persona-datos {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.inscriptos-page .persona-pill {
+  flex: 1;
+  background-color: var(--pill-bg);
+  border: 1.5px solid var(--pill-border);
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.inscriptos-page .persona-descripcion {
+  background-color: var(--pill-bg);
+  border: 1.5px solid var(--pill-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  min-height: 200px;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
+/* PREFERENCIAS */
+.inscriptos-page .preferencias-card {
+  padding: 22px 28px 26px;
+}
+
+.inscriptos-page .preferencias-titulo {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.inscriptos-page .preferencias-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.inscriptos-page .pref-tag {
+  background-color: var(--accent);
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 12px 26px;
+  font-size: 0.95rem;
+}
+
+/* FOTO + DECISIONES */
+.inscriptos-page .inscriptos-right {
+  position: relative;
+}
+
+.inscriptos-page .persona-foto {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #d9dbdf;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 16px rgba(20,40,90,0.08);
+}
+
+.inscriptos-page .persona-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.inscriptos-page .persona-foto__placeholder {
+  color: #9aa0ab;
+}
+
+/* Botones aceptar / rechazar sobre los bordes de la foto */
+.inscriptos-page .btn-decision {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+  transition: transform 0.12s, filter 0.15s;
+}
+
+.inscriptos-page .btn-decision:hover {
+  filter: brightness(1.05);
+}
+
+.inscriptos-page .btn-decision:active {
+  transform: translateY(-50%) scale(0.92);
+}
+
+.inscriptos-page .btn-rechazar {
+  left: -14px;
+  background-color: #e23b3b;
+}
+
+.inscriptos-page .btn-aceptar {
+  right: -14px;
+  background-color: #2fa84f;
+}
+
+/* VACÍO */
+.inscriptos-page .inscriptos-vacio {
+  text-align: center;
+  margin-top: 80px;
+  color: var(--text-muted);
+  font-size: 1.15rem;
+}
+
+.inscriptos-page .btn-volver-perfil {
+  margin-top: 20px;
+  padding: 12px 28px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.inscriptos-page .btn-volver-perfil:hover {
+  background: #1d54e0;
+}
+
+@media (max-width: 900px) {
+  .inscriptos-page .inscriptos-body {
+    grid-template-columns: 1fr;
+  }
+  .inscriptos-page .btn-rechazar { left: 8px; }
+  .inscriptos-page .btn-aceptar { right: 8px; }
+}
