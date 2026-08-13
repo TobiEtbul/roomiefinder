@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import AppNavbar from '../components/AppNavbar'
 import { usePublicaciones } from '../context/PublicacionesContext'
 import { useAuth } from '../context/AuthContext'
+import { misPostulaciones, postulacionesDePublicacion } from '../api/postulaciones'
 import '../styles/perfil.css'
 
 const PRECIO_LABELS = {
@@ -47,9 +48,11 @@ function EditIcon() {
 export default function PerfilPage() {
   const navigate = useNavigate()
   const { publicaciones, eliminarPublicacion } = usePublicaciones()
-  const { usuario } = useAuth()
+  const { usuario, token } = useAuth()
   const [tab, setTab] = useState('publicacion')
   const [menuAbierto, setMenuAbierto] = useState(null)
+  const [misInscripciones, setMisInscripciones] = useState([])
+  const [interesados, setInteresados] = useState({})
 
   const nombreUsuario = usuario
     ? `${usuario.nombre}${usuario.apellido ? ' ' + usuario.apellido : ''}`
@@ -59,6 +62,39 @@ export default function PerfilPage() {
   const misPublicaciones = usuario
     ? publicaciones.filter(p => p.propietario_id === usuario.id)
     : []
+  const misPubIds = misPublicaciones.map(p => p.id).join(',')
+
+  // Trae las inscripciones del usuario (a qué publicaciones se postuló).
+  useEffect(() => {
+    if (!token) return
+    let activo = true
+    misPostulaciones(token)
+      .then(data => { if (activo) setMisInscripciones(data || []) })
+      .catch(() => {})
+    return () => { activo = false }
+  }, [token])
+
+  // Cuenta cuántos interesados (postulaciones) tiene cada publicación propia.
+  useEffect(() => {
+    if (!token || !misPubIds) return
+    let activo = true
+    const ids = misPubIds.split(',')
+    Promise.all(
+      ids.map(async pid => {
+        try {
+          const posts = await postulacionesDePublicacion(pid, token)
+          // Solo cuentan las pendientes: al aceptar/rechazar baja el número.
+          const pendientes = (posts || []).filter(
+            p => p.estado?.estado_actual === 'pendiente'
+          )
+          return [pid, pendientes.length]
+        } catch {
+          return [pid, 0]
+        }
+      })
+    ).then(pares => { if (activo) setInteresados(Object.fromEntries(pares)) })
+    return () => { activo = false }
+  }, [token, misPubIds])
 
   // Cierra el menú al hacer click en cualquier otro lado.
   useEffect(() => {
@@ -156,7 +192,9 @@ export default function PerfilPage() {
                           {precio && (
                             <div className="perfil-row__precio">{precio} / mes</div>
                           )}
-                          <div className="perfil-row__meta">0 interesados</div>
+                          <div className="perfil-row__meta">
+                            {(interesados[post.id] ?? 0)} {interesados[post.id] === 1 ? 'interesado' : 'interesados'}
+                          </div>
 
                           <div className="perfil-row__more-wrap">
                           <button
@@ -196,9 +234,36 @@ export default function PerfilPage() {
                   })
                 )
               ) : (
-                <p className="perfil-empty">
-                  Todavía no te inscribiste en ninguna publicación.
-                </p>
+                misInscripciones.length === 0 ? (
+                  <p className="perfil-empty">
+                    Todavía no te inscribiste en ninguna publicación.
+                  </p>
+                ) : (
+                  misInscripciones.map(insc => {
+                    const pub = publicaciones.find(p => p.id === insc.publicacion_id)
+                    const estado = insc.estado?.estado_actual || 'pendiente'
+                    return (
+                      <div
+                        key={insc.id}
+                        className="perfil-row"
+                        onClick={() => pub && navigate(`/publicacion/${pub.id}`)}
+                      >
+                        <div className="perfil-row__image">
+                          {pub?.image ? <img src={pub.image} alt={pub.title} /> : <HouseIcon />}
+                        </div>
+                        <div className="perfil-row__info">
+                          <div className="perfil-row__title">{pub?.title || 'Publicación'}</div>
+                          {pub?.location && (
+                            <div className="perfil-row__location">
+                              <LocationPinIcon /> {pub.location}
+                            </div>
+                          )}
+                          <div className={`insc-estado insc-estado--${estado}`}>{estado}</div>
+                        </div>
+                      </div>
+                    )
+                  })
+                )
               )}
             </div>
 

@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import AppNavbar from '../components/AppNavbar'
 import { usePublicaciones } from '../context/PublicacionesContext'
+import { useAuth } from '../context/AuthContext'
+import { crearPostulacion } from '../api/postulaciones'
 import '../styles/detalle-publicacion.css'
 
 const PRECIO_LABELS = {
@@ -38,8 +40,31 @@ export default function PublicacionPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { publicaciones } = usePublicaciones()
+  const { usuario, token } = useAuth()
+  const [postulando, setPostulando] = useState(false)
+  const [postulado, setPostulado] = useState(false)
+  const [postError, setPostError] = useState('')
 
   const post = publicaciones.find(p => String(p.id) === id)
+  const esPropia = post && usuario && post.propietario_id === usuario.id
+
+  async function handleInscribirse() {
+    if (!usuario) { navigate('/iniciar-sesion'); return }
+    setPostError('')
+    setPostulando(true)
+    try {
+      await crearPostulacion(post.id, token)
+      setPostulado(true)
+    } catch (err) {
+      setPostError(
+        err.status === 409 || err.status === 400
+          ? 'Ya te inscribiste en esta publicación.'
+          : err.message || 'No se pudo enviar la inscripción.'
+      )
+    } finally {
+      setPostulando(false)
+    }
+  }
 
   const images = post
     ? (post.images?.length ? post.images : (post.image ? [post.image] : []))
@@ -134,7 +159,23 @@ export default function PublicacionPage() {
               </div>
             )}
 
-            <button className="btn-inscripcion">Inscripción</button>
+            {esPropia ? (
+              <button
+                className="btn-inscripcion"
+                onClick={() => navigate(`/publicacion/${post.id}/inscriptos`)}
+              >
+                Ver inscriptos
+              </button>
+            ) : (
+              <button
+                className="btn-inscripcion"
+                onClick={handleInscribirse}
+                disabled={postulando || postulado}
+              >
+                {postulado ? 'Inscripción enviada ✓' : postulando ? 'Enviando…' : 'Inscripción'}
+              </button>
+            )}
+            {postError && <p className="inscripcion-error">{postError}</p>}
           </section>
 
           {/* RIGHT — datos de la publicación */}

@@ -1,7 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import AppNavbar from '../components/AppNavbar'
 import { usePublicaciones } from '../context/PublicacionesContext'
+import { useAuth } from '../context/AuthContext'
+import { obtenerUsuario } from '../api/auth'
+import {
+  postulacionesDePublicacion,
+  listarEstados,
+  actualizarEstado,
+} from '../api/postulaciones'
 import '../styles/inscriptos.css'
 
 function PersonIcon() {
@@ -12,57 +19,100 @@ function PersonIcon() {
   )
 }
 
-// Datos hardcodeados. TODO: reemplazar por GET /postulaciones/publicacion/{id}
-// + GET /users/{id} cuando conectemos las inscripciones.
-const INSCRIPTOS_MOCK = [
-  {
-    id: 'a1',
-    nombre: 'Juan Pérez',
-    edad: 24,
-    genero: 'Masculino',
-    descripcion: 'Estudiante de ingeniería, tranquilo y ordenado. Me gusta cocinar y mantener los espacios comunes prolijos. Busco un lugar cerca de la facultad.',
-    preferencias: ['Ordenado', 'Tranquilo', 'Sociable'],
-    foto: null,
-  },
-  {
-    id: 'a2',
-    nombre: 'Mora González',
-    edad: 22,
-    genero: 'Femenino',
-    descripcion: 'Diseñadora gráfica, sociable y divertida. Me encanta juntar gente los fines de semana y cocinar para todos. Súper respetuosa con los horarios.',
-    preferencias: ['Sociable', 'Divertido', 'Fiestero'],
-    foto: null,
-  },
-  {
-    id: 'a3',
-    nombre: 'Lucas Ramírez',
-    edad: 27,
-    genero: 'Masculino',
-    descripcion: 'Trabajo en IT desde casa, así que valoro los ambientes tranquilos y ordenados durante el día. Tranquilo, limpio y de bajo perfil.',
-    preferencias: ['Ordenado', 'Tranquilo'],
-    foto: null,
-  },
-]
+const GENERO_LABELS = {
+  masculino: 'Masculino',
+  femenino: 'Femenino',
+  no_binario: 'No binario',
+  prefiero_no_decir: 'Prefiere no decir',
+}
+
+function calcularEdad(fecha) {
+  if (!fecha) return null
+  const nac = new Date(fecha)
+  if (isNaN(nac)) return null
+  const hoy = new Date()
+  let edad = hoy.getFullYear() - nac.getFullYear()
+  const m = hoy.getMonth() - nac.getMonth()
+  if (m < 0 || (m === 0 && hoy.getDate() < nac.getDate())) edad--
+  return edad
+}
 
 export default function InscriptosPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { publicaciones } = usePublicaciones()
+  const { token } = useAuth()
 
   const publicacion = publicaciones.find(p => String(p.id) === id)
+
+  const [inscriptos, setInscriptos] = useState([])
+  const [estados, setEstados] = useState([])
+  const [cargando, setCargando] = useState(true)
   const [indice, setIndice] = useState(0)
+  const [procesando, setProcesando] = useState(false)
 
-  const inscripto = INSCRIPTOS_MOCK[indice]
+  // Carga las postulaciones pendientes + el perfil de cada postulante.
+  useEffect(() => {
+    let activo = true
+    async function cargar() {
+      setCargando(true)
+      try {
+        const [posts, ests] = await Promise.all([
+          postulacionesDePublicacion(id, token),
+          listarEstados(),
+        ])
+        if (!activo) return
+        setEstados(ests || [])
 
-  // TODO: al conectar inscripciones, aceptar/rechazar llamarán a
-  // PUT /postulaciones/{id} con el estado correspondiente.
-  function aceptar() {
-    setIndice(i => i + 1)
+        // Solo las pendientes de revisar.
+        const pendientes = (posts || []).filter(
+          p => p.estado?.estado_actual === 'pendiente'
+        )
+
+        // Traemos el perfil de cada postulante.
+        const conUsuario = await Promise.all(
+          pendientes.map(async p => {
+            let u = null
+            try { u = await obtenerUsuario(p.postulante_id) } catch { /* ignore */ }
+            return { postulacion: p, usuario: u }
+          })
+        )
+        if (activo) setInscriptos(conUsuario)
+      } catch {
+        if (activo) setInscriptos([])
+      } finally {
+        if (activo) setCargando(false)
+      }
+    }
+    if (token) cargar()
+    else setCargando(false)
+    return () => { activo = false }
+  }, [id, token])
+
+  function estadoId(nombre) {
+    return estados.find(e => e.estado_actual === nombre)?.id
   }
 
-  function rechazar() {
-    setIndice(i => i + 1)
+  async function decidir(nombreEstado) {
+    const actual = inscriptos[indice]
+    if (!actual) return
+    const eid = estadoId(nombreEstado)
+    if (!eid) return
+    setProcesando(true)
+    try {
+      await actualizarEstado(actual.postulacion.id, eid, token)
+      setIndice(i => i + 1)
+    } catch {
+      // si falla, no avanzamos
+    } finally {
+      setProcesando(false)
+    }
   }
+
+  const actual = inscriptos[indice]
+  const u = actual?.usuario
+  const edad = calcularEdad(u?.fecha_nacimiento)
+  const prefs = (u?.preferencias || '').split(',').map(s => s.trim()).filter(Boolean)
 
   return (
     <div className="inscriptos-page">
@@ -78,30 +128,35 @@ export default function InscriptosPage() {
           )}
         </div>
 
-        {inscripto ? (
+        {cargando ? (
+          <p className="inscriptos-vacio">Cargando inscriptos…</p>
+        ) : actual ? (
           <div className="inscriptos-body">
 
             {/* IZQUIERDA — perfil del inscripto */}
             <div className="inscriptos-left">
               <section className="card persona-card">
-                <h2 className="persona-nombre">{inscripto.nombre}</h2>
+                <h2 className="persona-nombre">
+                  {u ? `${u.nombre} ${u.apellido || ''}`.trim() : 'Postulante'}
+                </h2>
 
                 <div className="persona-datos">
-                  <div className="persona-pill">{inscripto.edad} años</div>
-                  <div className="persona-pill">{inscripto.genero}</div>
+                  <div className="persona-pill">{edad != null ? `${edad} años` : 'Edad'}</div>
+                  <div className="persona-pill">{GENERO_LABELS[u?.genero] || 'Género'}</div>
                 </div>
 
                 <div className="persona-descripcion">
-                  {inscripto.descripcion}
+                  {u?.descripcion || 'Sin descripción.'}
                 </div>
               </section>
 
               <section className="card preferencias-card">
                 <h3 className="preferencias-titulo">Preferencias de roomies</h3>
                 <div className="preferencias-tags">
-                  {inscripto.preferencias.map((pref, i) => (
-                    <span key={i} className="pref-tag">{pref}</span>
-                  ))}
+                  {prefs.length > 0
+                    ? prefs.map((pref, i) => <span key={i} className="pref-tag">{pref}</span>)
+                    : <span className="preferencias-vacio">Sin preferencias cargadas</span>
+                  }
                 </div>
               </section>
             </div>
@@ -109,19 +164,29 @@ export default function InscriptosPage() {
             {/* DERECHA — foto + aceptar/rechazar */}
             <div className="inscriptos-right">
               <div className="persona-foto">
-                {inscripto.foto
-                  ? <img src={inscripto.foto} alt={inscripto.nombre} />
+                {u?.foto_perfil_url
+                  ? <img src={u.foto_perfil_url} alt={u.nombre} />
                   : <span className="persona-foto__placeholder"><PersonIcon /></span>
                 }
 
-                <button className="btn-decision btn-rechazar" onClick={rechazar} aria-label="Rechazar">
+                <button
+                  className="btn-decision btn-rechazar"
+                  onClick={() => decidir('rechazada')}
+                  disabled={procesando}
+                  aria-label="Rechazar"
+                >
                   <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
                     <line x1="6" y1="6" x2="18" y2="18" />
                     <line x1="18" y1="6" x2="6" y2="18" />
                   </svg>
                 </button>
 
-                <button className="btn-decision btn-aceptar" onClick={aceptar} aria-label="Aceptar">
+                <button
+                  className="btn-decision btn-aceptar"
+                  onClick={() => decidir('aceptada')}
+                  disabled={procesando}
+                  aria-label="Aceptar"
+                >
                   <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="5 13 10 18 19 6" />
                   </svg>
@@ -132,7 +197,7 @@ export default function InscriptosPage() {
           </div>
         ) : (
           <div className="inscriptos-vacio">
-            <p>No hay más inscriptos para revisar.</p>
+            <p>No hay inscriptos pendientes para revisar.</p>
             <button className="btn-volver-perfil" onClick={() => navigate('/perfil')}>
               Volver al perfil
             </button>

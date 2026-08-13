@@ -167,6 +167,18 @@
   transform: scale(0.98);
 }
 
+.detalle-page .btn-inscripcion:disabled {
+  background: #6f8dd6;
+  cursor: default;
+}
+
+.detalle-page .inscripcion-error {
+  margin-top: 10px;
+  color: #d13438;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
 /* RIGHT CARD */
 .detalle-page .right-card {
   background: var(--card-bg);

@@ -133,6 +133,11 @@
   font-size: 0.95rem;
 }
 
+.inscriptos-page .preferencias-vacio {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
 /* FOTO + DECISIONES */
 .inscriptos-page .inscriptos-right {
   position: relative;
