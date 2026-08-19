@@ -242,6 +242,14 @@ export default function PerfilPage() {
                   misInscripciones.map(insc => {
                     const pub = publicaciones.find(p => p.id === insc.publicacion_id)
                     const estado = insc.estado?.estado_actual || 'pendiente'
+                    const estadoLabel = estado === 'aceptada'
+                      ? 'Aceptada'
+                      : estado === 'rechazada'
+                        ? 'Rechazada'
+                        : 'Solicitud enviada'
+                    const precio = pub?.precio
+                      ? (PRECIO_LABELS[pub.precio] || `$ ${pub.precio} USD`)
+                      : ''
                     return (
                       <div
                         key={insc.id}
@@ -258,7 +266,8 @@ export default function PerfilPage() {
                               <LocationPinIcon /> {pub.location}
                             </div>
                           )}
-                          <div className={`insc-estado insc-estado--${estado}`}>{estado}</div>
+                          {precio && <div className="perfil-row__precio">{precio}</div>}
+                          <span className={`insc-estado insc-estado--${estado}`}>{estadoLabel}</span>
                         </div>
                       </div>
                     )

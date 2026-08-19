@@ -216,28 +216,29 @@
 
 /* BADGE DE ESTADO DE INSCRIPCIÓN */
 .insc-estado {
-  align-self: flex-start;
-  margin-top: 4px;
-  padding: 4px 14px;
-  border-radius: 50px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: capitalize;
+  position: absolute;
+  top: 50%;
+  right: 22px;
+  transform: translateY(-50%);
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .insc-estado--pendiente {
-  background: #fff3d6;
-  color: #9a6b00;
+  background: #6f7787;
+  color: #ffffff;
 }
 
 .insc-estado--aceptada {
-  background: #d8f5df;
-  color: #1a7f37;
+  background: #2fa84f;
+  color: #ffffff;
 }
 
 .insc-estado--rechazada {
-  background: #fbe0df;
-  color: #c0392b;
+  background: #d0433d;
+  color: #ffffff;
 }
 
 .perfil-row__more-wrap {
