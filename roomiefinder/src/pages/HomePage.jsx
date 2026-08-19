@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AppNavbar from '../components/AppNavbar'
 import { usePublicaciones } from '../context/PublicacionesContext'
+import { useAuth } from '../context/AuthContext'
+import { misPostulaciones } from '../api/postulaciones'
 import '../styles/publicaciones.css'
 
 function HouseIcon() {
@@ -64,8 +66,30 @@ export default function HomePage() {
   const [search, setSearch] = useState('')
   const [filtros, setFiltros] = useState(EMPTY_FILTERS)
   const [aplicados, setAplicados] = useState(EMPTY_FILTERS)
+  const [nInscripciones, setNInscripciones] = useState(0)
   const navigate = useNavigate()
   const { publicaciones } = usePublicaciones()
+  const { usuario, token } = useAuth()
+  const foroRef = useRef(null)
+
+  // Números de "Tu actividad".
+  const nPublicados = usuario
+    ? publicaciones.filter(p => p.propietario_id === usuario.id).length
+    : 0
+  const nMensajes = 0 // TODO: conectar cuando exista el chat.
+
+  useEffect(() => {
+    if (!token) return
+    let activo = true
+    misPostulaciones(token)
+      .then(data => { if (activo) setNInscripciones((data || []).length) })
+      .catch(() => {})
+    return () => { activo = false }
+  }, [token])
+
+  function irAlForo() {
+    foroRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   function setFiltro(campo, valor) {
     setFiltros(prev => ({ ...prev, [campo]: valor }))
@@ -105,7 +129,65 @@ export default function HomePage() {
     <div className="publicaciones-page">
       <AppNavbar />
 
-      <div className="page-body">
+      {/* HERO / Tu actividad */}
+      <section className="home-hero">
+        <div className="home-hero__text">
+          <h1 className="home-hero__title">Tu próximo hogar, con la gente correcta</h1>
+          <p className="home-hero__subtitle">
+            Buscá tu próximo hogar y con quién compartirlo, de forma simple y segura.
+          </p>
+
+          <h2 className="home-hero__actividad">Tu actividad</h2>
+          <div className="home-hero__stats">
+            <div className="home-stat">
+              <span className="home-stat__num">{nInscripciones}</span>
+              <span className="home-stat__label">Inscripciones</span>
+            </div>
+            <div className="home-stat">
+              <span className="home-stat__num">{nMensajes}</span>
+              <span className="home-stat__label">Mensajes</span>
+            </div>
+            <div className="home-stat">
+              <span className="home-stat__num">{nPublicados}</span>
+              <span className="home-stat__label">Publicados</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="home-hero__cards" aria-hidden="true">
+          <div className="home-mini-card home-mini-card--back">
+            <div className="home-mini-card__img">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="60" height="60"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            </div>
+            <div className="home-mini-card__band">
+              <span>Nombre</span>
+              <span className="home-mini-card__ubi">Ubi
+                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+              </span>
+            </div>
+          </div>
+          <div className="home-mini-card home-mini-card--front">
+            <div className="home-mini-card__img">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="60" height="60"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            </div>
+            <div className="home-mini-card__band">
+              <span>Nombre</span>
+              <span className="home-mini-card__ubi">Ubi
+                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <button className="home-hero__scroll" onClick={irAlForo}>
+          Mirá las publicaciones
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="26" height="26">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+      </section>
+
+      <div className="page-body" ref={foroRef}>
 
         <aside className="filters-sidebar">
           <h2 className="filters-title">Filtros</h2>

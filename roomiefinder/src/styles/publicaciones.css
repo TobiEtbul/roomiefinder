@@ -18,6 +18,150 @@
   color: var(--text-primary);
 }
 
+/* HERO / TU ACTIVIDAD */
+.publicaciones-page .home-hero {
+  position: relative;
+  min-height: calc(100vh - 62px);
+  background: linear-gradient(135deg, #0c1a3c 0%, #16357e 60%, #0d1f4d 100%);
+  color: #ffffff;
+  padding: 60px 60px 70px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.publicaciones-page .home-hero__text {
+  max-width: 60%;
+  position: relative;
+  z-index: 2;
+}
+
+.publicaciones-page .home-hero__title {
+  font-size: 3.4rem;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+
+.publicaciones-page .home-hero__subtitle {
+  margin-top: 18px;
+  font-size: 1.25rem;
+  color: rgba(255,255,255,0.82);
+}
+
+.publicaciones-page .home-hero__actividad {
+  margin-top: 56px;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.publicaciones-page .home-hero__stats {
+  display: flex;
+  gap: 72px;
+  margin-top: 32px;
+}
+
+.publicaciones-page .home-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.publicaciones-page .home-stat__num {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.publicaciones-page .home-stat__label {
+  font-size: 1.3rem;
+}
+
+/* Tarjetas decorativas */
+.publicaciones-page .home-hero__cards {
+  position: absolute;
+  right: 70px;
+  top: 46%;
+  transform: translateY(-50%);
+  width: 460px;
+  height: 340px;
+  z-index: 1;
+}
+
+.publicaciones-page .home-mini-card {
+  position: absolute;
+  width: 280px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 12px 34px rgba(0,0,0,0.35);
+}
+
+.publicaciones-page .home-mini-card--back {
+  top: 0;
+  right: 0;
+}
+
+.publicaciones-page .home-mini-card--front {
+  bottom: 0;
+  left: 0;
+}
+
+.publicaciones-page .home-mini-card__img {
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111;
+  background: #ffffff;
+}
+
+.publicaciones-page .home-mini-card__band {
+  background: #2f6bff;
+  color: #ffffff;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 1.05rem;
+  min-height: 58px;
+}
+
+.publicaciones-page .home-mini-card__ubi {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9rem;
+}
+
+/* Scroll indicator */
+.publicaciones-page .home-hero__scroll {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 1.05rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  z-index: 2;
+}
+
+.publicaciones-page .home-hero__scroll svg {
+  animation: hero-bounce 1.6s ease-in-out infinite;
+}
+
+@keyframes hero-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
 /* LAYOUT: sidebar + content */
 .publicaciones-page .page-body {
   display: grid;
@@ -294,6 +438,37 @@
   color: var(--text-secondary);
   margin-top: 60px;
   font-size: 1.1rem;
+}
+
+@media (max-width: 900px) {
+  .publicaciones-page .home-hero {
+    padding: 32px 20px 60px;
+  }
+  .publicaciones-page .home-hero__text {
+    max-width: 100%;
+  }
+  .publicaciones-page .home-hero__title {
+    font-size: 2rem;
+  }
+  .publicaciones-page .home-hero__subtitle {
+    font-size: 1rem;
+  }
+  .publicaciones-page .home-hero__actividad {
+    margin-top: 32px;
+    font-size: 1.3rem;
+  }
+  .publicaciones-page .home-hero__stats {
+    gap: 32px;
+  }
+  .publicaciones-page .home-stat__num {
+    font-size: 2rem;
+  }
+  .publicaciones-page .home-stat__label {
+    font-size: 1rem;
+  }
+  .publicaciones-page .home-hero__cards {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
