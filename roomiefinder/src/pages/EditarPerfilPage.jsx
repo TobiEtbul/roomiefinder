@@ -76,6 +76,10 @@ export default function EditarPerfilPage() {
       setError('Ingresá tu nombre.')
       return
     }
+    if (descripcion.trim().split(/\s+/).filter(Boolean).length < 50) {
+      setError('La descripción personal debe tener al menos 50 palabras.')
+      return
+    }
 
     const partes = nombre.trim().split(/\s+/)
     const cambios = {
