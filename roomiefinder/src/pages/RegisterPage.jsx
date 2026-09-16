@@ -61,7 +61,7 @@ export default function RegisterPage() {
     if (fecha.length < 10) camposFaltantes.push('Fecha de nacimiento')
     if (!password.trim()) camposFaltantes.push('Contraseña')
     if (!terminos) camposFaltantes.push('Términos y condiciones')
-    if (descripcion.trim().split(/\s+/).filter(Boolean).length < 50) camposFaltantes.push('Descripción personal (mínimo 50 palabras)')
+    if (descripcion.trim().split(/\s+/).filter(Boolean).length < 25) camposFaltantes.push('Descripción personal (mínimo 25 palabras)')
 
     if (camposFaltantes.length > 0) {
       setModalCampos(camposFaltantes)
@@ -285,7 +285,7 @@ export default function RegisterPage() {
               value={descripcion}
               onChange={e => setDescripcion(e.target.value)}
             />
-            <p className="hint">Minimo 50 palabras</p>
+            <p className="hint">Minimo 25 palabras</p>
           </div>
 
           <div className="card preferences-card">

@@ -76,8 +76,8 @@ export default function EditarPerfilPage() {
       setError('Ingresá tu nombre.')
       return
     }
-    if (descripcion.trim().split(/\s+/).filter(Boolean).length < 50) {
-      setError('La descripción personal debe tener al menos 50 palabras.')
+    if (descripcion.trim().split(/\s+/).filter(Boolean).length < 25) {
+      setError('La descripción personal debe tener al menos 25 palabras.')
       return
     }
 
@@ -188,7 +188,7 @@ export default function EditarPerfilPage() {
               value={descripcion}
               onChange={e => setDescripcion(e.target.value)}
             />
-            <p className="hint">Minimo 50 palabras</p>
+            <p className="hint">Minimo 25 palabras</p>
           </div>
 
           <div className="card preferences-card">
