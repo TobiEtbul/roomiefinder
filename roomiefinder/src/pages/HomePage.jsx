@@ -47,8 +47,6 @@ function ChevronIcon() {
   )
 }
 
-// Convierte el precio guardado en [min, max].
-// Soporta montos numéricos ("1200") y rangos viejos ("0-500", "2000+").
 function parsePrecio(precio) {
   if (!precio) return [0, Infinity]
   if (precio.endsWith('+')) return [Number(precio.replace('+', '')) || 0, Infinity]
@@ -72,11 +70,10 @@ export default function HomePage() {
   const { usuario, token } = useAuth()
   const foroRef = useRef(null)
 
-  // Números de "Tu actividad".
   const nPublicados = usuario
     ? publicaciones.filter(p => p.propietario_id === usuario.id).length
     : 0
-  const nMensajes = 0 // TODO: conectar cuando exista el chat.
+  const nMensajes = 0
 
   useEffect(() => {
     if (!token) return
@@ -122,14 +119,13 @@ export default function HomePage() {
     .sort((a, b) => {
       if (aplicados.orden === 'precio-asc') return parsePrecio(a.precio)[0] - parsePrecio(b.precio)[0]
       if (aplicados.orden === 'precio-desc') return parsePrecio(b.precio)[0] - parsePrecio(a.precio)[0]
-      return 0 // más recientes: ya vienen ordenados por creación
+      return 0
     })
 
   return (
     <div className="publicaciones-page">
       <AppNavbar />
 
-      {/* HERO / Tu actividad */}
       <section className="home-hero">
         <div className="home-hero__text">
           <h1 className="home-hero__title">Tu próximo hogar, con la gente correcta</h1>

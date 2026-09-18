@@ -11,7 +11,6 @@ export default function EditarPerfilPage() {
   const navigate = useNavigate()
   const { usuario, token, actualizarPerfil } = useAuth()
 
-  // Estado inicial precargado con los datos del usuario.
   const [nombre, setNombre] = useState(
     usuario ? `${usuario.nombre}${usuario.apellido ? ' ' + usuario.apellido : ''}` : ''
   )
@@ -34,7 +33,6 @@ export default function EditarPerfilPage() {
   const [guardando, setGuardando] = useState(false)
   const fileInputRef = useRef(null)
 
-  // Si no hay sesión, no se puede editar el perfil.
   if (!usuario) return <Navigate to="/iniciar-sesion" replace />
 
   function handleFotoClick() {
@@ -93,7 +91,7 @@ export default function EditarPerfilPage() {
 
     setGuardando(true)
     try {
-      // Si eligió una foto nueva, la subimos y guardamos su URL.
+
       if (fotoFile) {
         const { url } = await subirImagen(fotoFile, token)
         cambios.foto_perfil_url = url

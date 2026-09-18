@@ -51,7 +51,6 @@ export default function InscriptosPage() {
   const [indice, setIndice] = useState(0)
   const [procesando, setProcesando] = useState(false)
 
-  // Carga las postulaciones pendientes + el perfil de cada postulante.
   useEffect(() => {
     let activo = true
     async function cargar() {
@@ -64,16 +63,14 @@ export default function InscriptosPage() {
         if (!activo) return
         setEstados(ests || [])
 
-        // Solo las pendientes de revisar.
         const pendientes = (posts || []).filter(
           p => p.estado?.estado_actual === 'pendiente'
         )
 
-        // Traemos el perfil de cada postulante.
         const conUsuario = await Promise.all(
           pendientes.map(async p => {
             let u = null
-            try { u = await obtenerUsuario(p.postulante_id) } catch { /* ignore */ }
+            try { u = await obtenerUsuario(p.postulante_id) } catch {}
             return { postulacion: p, usuario: u }
           })
         )
@@ -103,7 +100,7 @@ export default function InscriptosPage() {
       await actualizarEstado(actual.postulacion.id, eid, token)
       setIndice(i => i + 1)
     } catch {
-      // si falla, no avanzamos
+
     } finally {
       setProcesando(false)
     }
@@ -133,7 +130,6 @@ export default function InscriptosPage() {
         ) : actual ? (
           <div className="inscriptos-body">
 
-            {/* IZQUIERDA — perfil del inscripto */}
             <div className="inscriptos-left">
               <section className="card persona-card">
                 <h2 className="persona-nombre">
@@ -161,7 +157,6 @@ export default function InscriptosPage() {
               </section>
             </div>
 
-            {/* DERECHA — foto + aceptar/rechazar */}
             <div className="inscriptos-right">
               <div className="persona-foto">
                 {u?.foto_perfil_url

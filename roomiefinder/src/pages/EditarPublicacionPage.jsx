@@ -35,13 +35,12 @@ export default function EditarPublicacionPage() {
   const [descripcion, setDescripcion] = useState(post?.descripcion || '')
   const [images, setImages]       = useState(() => {
     const arr = post ? (post.images?.length ? post.images : (post.image ? [post.image] : [])) : []
-    // Fotos existentes: ya tienen url (Cloudinary) y no hay que volver a subirlas.
+
     return arr.map(url => ({ file: null, preview: url }))
   })
   const [error, setError]         = useState('')
   const [guardando, setGuardando] = useState(false)
 
-  // Cantidad de fotos ya guardadas (para no volver a subirlas).
   const fotosPrevias = images.filter(img => !img.file).length
 
   function handleImageSelect(e) {
@@ -101,7 +100,6 @@ export default function EditarPublicacionPage() {
 
         <div className="layout">
 
-          {/* FORM CARD */}
           <section className="form-card">
 
             <div className="form-group">
@@ -175,7 +173,6 @@ export default function EditarPublicacionPage() {
             </button>
           </section>
 
-          {/* IMAGE CARD */}
           <aside
             className="image-card"
             onClick={() => images.length === 0 && fileInputRef.current.click()}

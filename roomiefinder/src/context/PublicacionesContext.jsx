@@ -5,10 +5,8 @@ import { useAuth } from './AuthContext'
 
 const PublicacionesContext = createContext()
 
-// Traduce una publicación del backend a la forma que usan las pantallas.
 function normalizar(p) {
-  // Solo URLs http(s) válidas. Descartamos rutas locales (file://) que
-  // algunos clientes (mobile) guardaron por error y no cargan en otros lados.
+
   const urls = (p.fotos || [])
     .map(f => f.url)
     .filter(u => /^https?:\/\//i.test(u))
@@ -28,7 +26,6 @@ function normalizar(p) {
   }
 }
 
-// Traduce la forma del front al schema que espera el backend.
 function aBackend(data) {
   const payload = {}
   if (data.title !== undefined) payload.titulo = data.title.trim()
@@ -44,14 +41,13 @@ export function PublicacionesProvider({ children }) {
   const [publicaciones, setPublicaciones] = useState([])
   const [cargando, setCargando] = useState(true)
 
-  // Trae las publicaciones del backend.
   const recargar = useCallback(async () => {
     setCargando(true)
     try {
       const data = await pubApi.listarPublicaciones()
       setPublicaciones((data || []).map(normalizar))
     } catch {
-      // Si falla la carga dejamos la lista como está.
+
     } finally {
       setCargando(false)
     }
@@ -61,15 +57,13 @@ export function PublicacionesProvider({ children }) {
     recargar()
   }, [recargar])
 
-  // Sube los archivos y los adjunta a la publicación. Si alguno falla, no
-  // aborta la operación (la publicación ya existe).
   async function subirYAdjuntar(pubId, archivos = [], ordenInicial = 0) {
     for (let i = 0; i < archivos.length; i++) {
       try {
         const { url } = await subirImagen(archivos[i], token)
         await pubApi.agregarFoto(pubId, url, ordenInicial + i, token)
       } catch {
-        // seguimos con las demás imágenes
+
       }
     }
   }
@@ -78,7 +72,7 @@ export function PublicacionesProvider({ children }) {
     const archivos = data.archivos || []
     const creada = await pubApi.crearPublicacion(aBackend(data), token)
     await subirYAdjuntar(creada.id, archivos, 0)
-    // Si hubo fotos, recargamos la publicación para traerlas.
+
     const completa = archivos.length ? await pubApi.obtenerPublicacion(creada.id) : creada
     setPublicaciones(prev => [normalizar(completa), ...prev])
     return normalizar(completa)

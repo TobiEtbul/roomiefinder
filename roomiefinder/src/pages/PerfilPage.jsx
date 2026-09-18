@@ -58,13 +58,11 @@ export default function PerfilPage() {
     ? `${usuario.nombre}${usuario.apellido ? ' ' + usuario.apellido : ''}`
     : 'Nombre Usuario'
 
-  // Publicaciones creadas por el usuario logueado.
   const misPublicaciones = usuario
     ? publicaciones.filter(p => p.propietario_id === usuario.id)
     : []
   const misPubIds = misPublicaciones.map(p => p.id).join(',')
 
-  // Trae las inscripciones del usuario (a qué publicaciones se postuló).
   useEffect(() => {
     if (!token) return
     let activo = true
@@ -74,7 +72,6 @@ export default function PerfilPage() {
     return () => { activo = false }
   }, [token])
 
-  // Cuenta cuántos interesados (postulaciones) tiene cada publicación propia.
   useEffect(() => {
     if (!token || !misPubIds) return
     let activo = true
@@ -83,7 +80,7 @@ export default function PerfilPage() {
       ids.map(async pid => {
         try {
           const posts = await postulacionesDePublicacion(pid, token)
-          // Solo cuentan las pendientes: al aceptar/rechazar baja el número.
+
           const pendientes = (posts || []).filter(
             p => p.estado?.estado_actual === 'pendiente'
           )
@@ -96,7 +93,6 @@ export default function PerfilPage() {
     return () => { activo = false }
   }, [token, misPubIds])
 
-  // Cierra el menú al hacer click en cualquier otro lado.
   useEffect(() => {
     if (menuAbierto === null) return
     function cerrar() { setMenuAbierto(null) }
@@ -116,7 +112,7 @@ export default function PerfilPage() {
     try {
       await eliminarPublicacion(id)
     } catch {
-      // Si falla el borrado, la publicación queda como estaba.
+
     }
   }
 
@@ -127,7 +123,6 @@ export default function PerfilPage() {
       <div className="page-content">
         <div className="perfil-layout">
 
-          {/* SIDEBAR */}
           <aside className="perfil-sidebar">
             <div className="perfil-avatar">
               {usuario?.foto_perfil_url
@@ -143,7 +138,6 @@ export default function PerfilPage() {
             </button>
           </aside>
 
-          {/* MAIN */}
           <main className="perfil-main">
 
             <div className="perfil-tabs">

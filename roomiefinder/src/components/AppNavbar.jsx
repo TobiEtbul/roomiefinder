@@ -30,6 +30,32 @@ function MenuIcon() {
   )
 }
 
+function HomeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+  )
+}
+
+function ChatIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
+      <path d="M20 2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h2v4l4-4h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
+    </svg>
+  )
+}
+
+function LogoutIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" width="26" height="26">
+      <path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4"/>
+      <polyline points="16 17 21 12 16 7"/>
+      <line x1="21" y1="12" x2="9" y2="12"/>
+    </svg>
+  )
+}
+
 export default function AppNavbar() {
   const location = useLocation()
   const navigate = useNavigate()
@@ -48,7 +74,6 @@ export default function AppNavbar() {
     navigate('/iniciar-sesion')
   }
 
-  // Cerrar el menú al hacer clic fuera
   useEffect(() => {
     function handleClickOutside(e) {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -96,30 +121,37 @@ export default function AppNavbar() {
                 className={`app-navbar__dropdown-item${isActive('/home') ? ' active' : ''}`}
                 onClick={() => setMenuOpen(false)}
               >
+                <HomeIcon />
                 Home
-              </Link>
-              <Link
-                to="/chats"
-                className={`app-navbar__dropdown-item${isActive('/chats') ? ' active' : ''}`}
-                onClick={() => setMenuOpen(false)}
-              >
-                Chats
               </Link>
               <Link
                 to="/perfil"
                 className={`app-navbar__dropdown-item${isActive('/perfil') ? ' active' : ''}`}
                 onClick={() => setMenuOpen(false)}
               >
+                <PersonIcon size={26} />
                 Perfil
               </Link>
+              <Link
+                to="/mensajes"
+                className={`app-navbar__dropdown-item${isActive('/mensajes') ? ' active' : ''}`}
+                onClick={() => setMenuOpen(false)}
+              >
+                <ChatIcon />
+                Mensajes
+              </Link>
               {usuario && (
-                <button
-                  type="button"
-                  className="app-navbar__dropdown-item app-navbar__dropdown-item--logout"
-                  onClick={handleCerrarSesion}
-                >
-                  Cerrar sesión
-                </button>
+                <>
+                  <span className="app-navbar__dropdown-sep" />
+                  <button
+                    type="button"
+                    className="app-navbar__dropdown-item app-navbar__dropdown-item--logout"
+                    onClick={handleCerrarSesion}
+                  >
+                    <LogoutIcon />
+                    Cerrar sesión
+                  </button>
+                </>
               )}
             </nav>
           )}

@@ -4,6 +4,7 @@ import AppNavbar from '../components/AppNavbar'
 import { usePublicaciones } from '../context/PublicacionesContext'
 import { useAuth } from '../context/AuthContext'
 import { crearPostulacion } from '../api/postulaciones'
+import { obtenerUsuario } from '../api/auth'
 import '../styles/detalle-publicacion.css'
 
 const PRECIO_LABELS = {
@@ -44,9 +45,24 @@ export default function PublicacionPage() {
   const [postulando, setPostulando] = useState(false)
   const [postulado, setPostulado] = useState(false)
   const [postError, setPostError] = useState('')
+  const [propietario, setPropietario] = useState(null)
 
   const post = publicaciones.find(p => String(p.id) === id)
   const esPropia = post && usuario && post.propietario_id === usuario.id
+
+  const propietarioId = post?.propietario_id
+  useEffect(() => {
+    if (!propietarioId) return
+    let activo = true
+    obtenerUsuario(propietarioId)
+      .then(u => { if (activo) setPropietario(u) })
+      .catch(() => {})
+    return () => { activo = false }
+  }, [propietarioId])
+
+  const nombrePropietario = propietario
+    ? `${propietario.nombre}${propietario.apellido ? ' ' + propietario.apellido : ''}`
+    : ''
 
   async function handleInscribirse() {
     if (!usuario) { navigate('/iniciar-sesion'); return }
@@ -122,11 +138,15 @@ export default function PublicacionPage() {
       <div className="page-content">
         <div className="layout">
 
-          {/* LEFT — imagen + descripción de persona + inscripción */}
           <section className="left-card">
             <div className="poster">
-              <span className="poster__avatar"><PersonIcon /></span>
-              <span className="poster__name">Nombre Persona</span>
+              <span className="poster__avatar">
+                {propietario?.foto_perfil_url
+                  ? <img src={propietario.foto_perfil_url} alt={nombrePropietario} />
+                  : <PersonIcon />
+                }
+              </span>
+              <span className="poster__name">{nombrePropietario || 'Cargando…'}</span>
             </div>
 
             <div
@@ -178,7 +198,6 @@ export default function PublicacionPage() {
             {postError && <p className="inscripcion-error">{postError}</p>}
           </section>
 
-          {/* RIGHT — datos de la publicación */}
           <section className="right-card">
 
             <div className="field field--full field--title">
@@ -219,7 +238,6 @@ export default function PublicacionPage() {
         </div>
       </div>
 
-      {/* LIGHTBOX */}
       {lightboxIndex !== null && (
         <div className="lightbox-overlay" onClick={closeLightbox}>
           <button className="lightbox-close" onClick={closeLightbox} aria-label="Cerrar">

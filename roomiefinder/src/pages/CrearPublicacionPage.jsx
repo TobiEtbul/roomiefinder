@@ -75,7 +75,6 @@ export default function CrearPublicacionPage() {
 
         <div className="layout">
 
-          {/* FORM CARD */}
           <section className="form-card">
 
             <div className="form-group">
@@ -149,7 +148,6 @@ export default function CrearPublicacionPage() {
             </button>
           </section>
 
-          {/* IMAGE CARD */}
           <aside
             className="image-card"
             onClick={() => images.length === 0 && fileInputRef.current.click()}

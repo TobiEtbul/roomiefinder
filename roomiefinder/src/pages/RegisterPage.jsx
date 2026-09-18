@@ -5,7 +5,6 @@ import '../styles/registrarse.css'
 
 const INITIAL_TAGS = ['Ordenado', 'Sociable', 'Tranquilo', 'Introvertido', 'Divertido']
 
-// El backend espera el género como enum; mapeamos desde las opciones del form.
 const GENERO_MAP = {
   'Masculino': 'masculino',
   'Femenino': 'femenino',
@@ -25,6 +24,7 @@ export default function RegisterPage() {
   const [showAddInput, setShowAddInput] = useState(false)
   const [newTag, setNewTag] = useState('')
   const [fotoPerfil, setFotoPerfil] = useState(null)
+  const [fotoFile, setFotoFile] = useState(null)
   const [nombre, setNombre] = useState('')
   const [dni, setDni] = useState('')
   const [genero, setGenero] = useState('')
@@ -46,8 +46,8 @@ export default function RegisterPage() {
   function handleFotoChange(e) {
     const file = e.target.files[0]
     if (!file) return
-    const url = URL.createObjectURL(file)
-    setFotoPerfil(url)
+    setFotoFile(file)
+    setFotoPerfil(URL.createObjectURL(file))
   }
 
   async function handleContinuar() {
@@ -68,12 +68,10 @@ export default function RegisterPage() {
       return
     }
 
-    // Partimos "Nombre completo" en nombre + apellido (el backend los pide separados).
     const partes = nombre.trim().split(/\s+/)
     const nombreN = partes[0]
     const apellidoN = partes.slice(1).join(' ') || partes[0]
 
-    // Fecha DD/MM/AAAA -> YYYY-MM-DD que espera el backend.
     const [dd, mm, aaaa] = fecha.split('/')
     const fechaISO = `${aaaa}-${mm}-${dd}`
 
@@ -91,7 +89,7 @@ export default function RegisterPage() {
 
     setEnviando(true)
     try {
-      await registrar(payload)
+      await registrar(payload, fotoFile)
       navigate('/home')
     } catch (err) {
       setError(err.message || 'No se pudo crear la cuenta.')

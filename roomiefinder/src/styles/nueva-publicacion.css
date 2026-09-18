@@ -25,7 +25,6 @@
   letter-spacing: 0.01em;
 }
 
-/* LAYOUT */
 .nueva-pub-page .layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -33,7 +32,6 @@
   align-items: start;
 }
 
-/* FORM CARD */
 .nueva-pub-page .form-card {
   background: var(--card-bg);
   border-radius: 20px;
@@ -41,7 +39,6 @@
   box-shadow: 0 2px 16px rgba(20,40,90,0.08);
 }
 
-/* INPUT BASE */
 .nueva-pub-page .input-field {
   width: 100%;
   background: var(--card-bg);
@@ -70,7 +67,6 @@
   margin-bottom: 16px;
 }
 
-/* SELECT ROW */
 .nueva-pub-page .select-row {
   display: flex;
   gap: 14px;
@@ -99,7 +95,6 @@
   color: var(--text-muted);
 }
 
-/* PRICE FIELD ($ ... USD) */
 .nueva-pub-page .price-field {
   flex: 1;
   display: flex;
@@ -148,7 +143,6 @@
   margin: 0;
 }
 
-/* TEXTAREA */
 .nueva-pub-page .textarea {
   width: 100%;
   background: var(--card-bg);
@@ -174,7 +168,6 @@
   box-shadow: 0 0 0 3px rgba(47,107,255,0.15);
 }
 
-/* ERROR MESSAGE */
 .nueva-pub-page .pub-error {
   color: #d13438;
   font-size: 0.9rem;
@@ -182,7 +175,6 @@
   margin: 16px 0 0;
 }
 
-/* PUBLISH BUTTON */
 .nueva-pub-page .btn-publicar {
   display: block;
   width: 100%;
@@ -213,7 +205,6 @@
   cursor: not-allowed;
 }
 
-/* IMAGE CARD */
 .nueva-pub-page .image-card {
   background: var(--card-bg);
   border-radius: 20px;
@@ -248,7 +239,6 @@
   line-height: 1.3;
 }
 
-/* IMAGE PREVIEWS */
 .nueva-pub-page .image-previews {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

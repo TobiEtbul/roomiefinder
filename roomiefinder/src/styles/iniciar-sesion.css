@@ -22,7 +22,6 @@
   min-height: 100vh;
 }
 
-/* HEADER */
 .login-page .page-header {
   background-color: var(--header-bg);
   padding: 20px 40px;
@@ -36,7 +35,6 @@
   letter-spacing: 0.01em;
 }
 
-/* LAYOUT */
 .login-page .container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -44,7 +42,6 @@
   padding: 20px 40px;
 }
 
-/* CARDS */
 .login-page .card {
   background-color: var(--card-bg);
   border-radius: var(--radius-lg);
@@ -60,7 +57,6 @@
   font-size: 1rem;
 }
 
-/* LABELS */
 .login-page label {
   display: block;
   font-size: 0.95rem;
@@ -69,12 +65,10 @@
   margin-bottom: 8px;
 }
 
-/* FORM GROUPS */
 .login-page .form-group {
   margin-bottom: 20px;
 }
 
-/* INPUTS */
 .login-page .input-field {
   width: 100%;
   background-color: var(--input-bg);
@@ -97,7 +91,6 @@
   box-shadow: 0 0 0 3px rgba(47,107,255,0.15);
 }
 
-/* PASSWORD WRAPPER */
 .login-page .password-wrapper {
   position: relative;
 }
@@ -128,7 +121,6 @@
   border-color: var(--accent);
 }
 
-/* FORGOT PASSWORD */
 .login-page .forgot-password {
   display: block;
   font-size: 0.85rem;
@@ -146,7 +138,6 @@
   color: var(--accent);
 }
 
-/* ERROR MESSAGE */
 .login-page .auth-error {
   color: #d13438;
   font-size: 0.9rem;
@@ -154,7 +145,6 @@
   margin: 4px 0 0;
 }
 
-/* ENTRAR BUTTON */
 .login-page .btn-entrar {
   display: block;
   width: 65%;
@@ -175,7 +165,6 @@
   background: var(--accent-hover);
 }
 
-/* SOCIAL BUTTONS */
 .login-page .btn-social {
   display: flex;
   align-items: center;
@@ -204,7 +193,6 @@
   flex-shrink: 0;
 }
 
-/* REGISTER LINK */
 .login-page .register-link {
   text-align: center;
   font-size: 0.9rem;
@@ -222,7 +210,6 @@
   text-decoration: underline;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
   .login-page .container {
     grid-template-columns: 1fr;

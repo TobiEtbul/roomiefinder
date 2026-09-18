@@ -1,12 +1,13 @@
 import { createContext, useContext, useState } from 'react'
 import * as authApi from '../api/auth'
+import { subirImagen } from '../api/uploads'
 
 const AuthContext = createContext()
 const USER_KEY = 'roomie_usuario'
 const TOKEN_KEY = 'roomie_token'
 
 export function AuthProvider({ children }) {
-  // Usuario logueado, persistido en localStorage para sobrevivir recargas.
+
   const [usuario, setUsuario] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem(USER_KEY)) || null
@@ -25,17 +26,24 @@ export function AuthProvider({ children }) {
     else localStorage.removeItem(TOKEN_KEY)
   }
 
-  // Registra el usuario (descripción/preferencias incluidas) y lo deja logueado.
-  // El registro no devuelve token, así que hacemos login para obtenerlo.
-  async function registrar(datos) {
+  async function registrar(datos, fotoFile) {
     const creado = await authApi.registrarUsuario(datos)
     const { token: nuevoToken } = await authApi.login(datos.email, datos.password)
-    guardar(creado, nuevoToken)
-    return creado
+
+    let usuarioFinal = creado
+    if (fotoFile) {
+      const { url } = await subirImagen(fotoFile, nuevoToken)
+      usuarioFinal = await authApi.actualizarUsuario(
+        creado.id,
+        { foto_perfil_url: url },
+        nuevoToken,
+      )
+    }
+
+    guardar(usuarioFinal, nuevoToken)
+    return usuarioFinal
   }
 
-  // Valida credenciales, usa el user_id que devuelve el login para traer
-  // el usuario completo, y guarda usuario + token.
   async function iniciarSesion(email, password) {
     const { token: nuevoToken, user_id } = await authApi.login(email, password)
     const u = await authApi.obtenerUsuario(user_id)
@@ -43,7 +51,6 @@ export function AuthProvider({ children }) {
     return u
   }
 
-  // Actualiza el perfil en el backend y refresca el usuario guardado.
   async function actualizarPerfil(cambios) {
     const u = await authApi.actualizarUsuario(usuario.id, cambios, token)
     guardar(u, token)

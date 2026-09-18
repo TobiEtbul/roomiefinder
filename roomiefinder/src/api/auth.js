@@ -1,8 +1,5 @@
-// Funciones de autenticación y usuarios contra el backend.
 import { apiFetch } from './client'
 
-// Crea un usuario. `datos` debe cumplir el schema UserCreate:
-// { nombre, apellido, dni, email, password, fecha_nacimiento (YYYY-MM-DD), genero }
 export function registrarUsuario(datos) {
   return apiFetch('/users/', {
     method: 'POST',
@@ -10,8 +7,6 @@ export function registrarUsuario(datos) {
   })
 }
 
-// Valida credenciales. El backend recibe { email, password } en el body
-// y devuelve { token, token_type, user_id, expira_en }.
 export function login(email, password) {
   return apiFetch('/auth/login', {
     method: 'POST',
@@ -19,12 +14,10 @@ export function login(email, password) {
   })
 }
 
-// Trae un usuario completo por su id.
 export function obtenerUsuario(id) {
   return apiFetch(`/users/${id}`)
 }
 
-// Actualiza el perfil del usuario (requiere token). Campos opcionales (UserUpdate).
 export function actualizarUsuario(id, datos, token) {
   return apiFetch(`/users/${id}`, {
     method: 'PUT',
@@ -33,7 +26,6 @@ export function actualizarUsuario(id, datos, token) {
   })
 }
 
-// Trae la lista de usuarios.
 export function listarUsuarios() {
   return apiFetch('/users/')
 }
