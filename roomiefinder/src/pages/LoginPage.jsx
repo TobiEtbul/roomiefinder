@@ -114,7 +114,7 @@ export default function LoginPage() {
         </form>
 
         <aside className="card right-panel">
-          <span>Foto?</span>
+          <img src="/foto-login.jpg" alt="Living de un departamento compartido" />
         </aside>
 
       </main>

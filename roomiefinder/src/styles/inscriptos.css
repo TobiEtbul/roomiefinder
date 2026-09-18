@@ -141,7 +141,8 @@
 .inscriptos-page .persona-foto {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 8 / 7;
+  max-height: calc(100vh - 200px);
   background-color: #d9dbdf;
   border-radius: 18px;
   overflow: hidden;
@@ -165,8 +166,8 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 76px;
-  height: 76px;
+  width: 92px;
+  height: 92px;
   border-radius: 50%;
   border: none;
   color: #ffffff;
@@ -187,12 +188,12 @@
 }
 
 .inscriptos-page .btn-rechazar {
-  left: -14px;
+  left: 28px;
   background-color: #e23b3b;
 }
 
 .inscriptos-page .btn-aceptar {
-  right: -14px;
+  right: 28px;
   background-color: #2fa84f;
 }
 
@@ -226,4 +227,48 @@
   }
   .inscriptos-page .btn-rechazar { left: 8px; }
   .inscriptos-page .btn-aceptar { right: 8px; }
+}
+
+.inscriptos-page .chat-creado {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: #d8f5df;
+  color: #14532d;
+  border-radius: 14px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+}
+
+.inscriptos-page .chat-creado span {
+  flex: 1;
+}
+
+.inscriptos-page .chat-creado__ir {
+  background-color: #2fa84f;
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 22px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.inscriptos-page .chat-creado__ir:hover {
+  background-color: #248a40;
+}
+
+.inscriptos-page .chat-creado__cerrar {
+  background: none;
+  border: none;
+  color: #14532d;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.inscriptos-page .btn-decision svg {
+  width: 42px;
+  height: 42px;
 }

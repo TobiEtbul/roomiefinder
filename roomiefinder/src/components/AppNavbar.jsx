@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { Logo } from '../landing/components/Logo'
 import '../styles/app-navbar.css'
 
 function PersonIcon({ size = 32 }) {
@@ -86,7 +87,9 @@ export default function AppNavbar() {
 
   return (
     <header className="app-navbar">
-      <Link to="/home" className="app-navbar__brand">Roomie Finder</Link>
+      <Link to="/home" className="app-navbar__brand" aria-label="Roomie Finder — inicio">
+        <Logo />
+      </Link>
 
       <div className="app-navbar__right">
         <Link to="/perfil" className="app-navbar__user">

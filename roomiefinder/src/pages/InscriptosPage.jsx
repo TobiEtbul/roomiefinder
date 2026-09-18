@@ -9,6 +9,7 @@ import {
   listarEstados,
   actualizarEstado,
 } from '../api/postulaciones'
+import { enviarMensaje } from '../api/mensajes'
 import '../styles/inscriptos.css'
 
 function PersonIcon() {
@@ -50,6 +51,7 @@ export default function InscriptosPage() {
   const [cargando, setCargando] = useState(true)
   const [indice, setIndice] = useState(0)
   const [procesando, setProcesando] = useState(false)
+  const [chatCreado, setChatCreado] = useState(null)
 
   useEffect(() => {
     let activo = true
@@ -98,6 +100,25 @@ export default function InscriptosPage() {
     setProcesando(true)
     try {
       await actualizarEstado(actual.postulacion.id, eid, token)
+
+      if (nombreEstado === 'aceptada') {
+        const postulanteId = actual.postulacion.postulante_id
+        const u = actual.usuario
+        const saludo = u?.nombre ? `¡Hola ${u.nombre}!` : '¡Hola!'
+        const titulo = publicacion?.title ? ` a "${publicacion.title}"` : ''
+        try {
+          await enviarMensaje(
+            postulanteId,
+            `${saludo} Acepté tu inscripción${titulo}. ¿Coordinamos para conocernos?`,
+            token,
+          )
+        } catch {}
+        setChatCreado({
+          usuarioId: postulanteId,
+          nombre: u ? `${u.nombre} ${u.apellido || ''}`.trim() : 'el postulante',
+        })
+      }
+
       setIndice(i => i + 1)
     } catch {
 
@@ -124,6 +145,29 @@ export default function InscriptosPage() {
             <span className="inscriptos-pub">Inscriptos a “{publicacion.title}”</span>
           )}
         </div>
+
+        {chatCreado && (
+          <div className="chat-creado">
+            <span>
+              Aceptaste a <strong>{chatCreado.nombre}</strong>. Se creó un chat para que coordinen.
+            </span>
+            <button
+              type="button"
+              className="chat-creado__ir"
+              onClick={() => navigate(`/mensajes/${chatCreado.usuarioId}`)}
+            >
+              Ir al chat
+            </button>
+            <button
+              type="button"
+              className="chat-creado__cerrar"
+              onClick={() => setChatCreado(null)}
+              aria-label="Cerrar aviso"
+            >
+              ×
+            </button>
+          </div>
+        )}
 
         {cargando ? (
           <p className="inscriptos-vacio">Cargando inscriptos…</p>

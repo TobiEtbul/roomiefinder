@@ -50,11 +50,16 @@
 }
 
 .login-page .right-panel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  font-size: 1rem;
+  padding: 0;
+  overflow: hidden;
+  min-height: 420px;
+}
+
+.login-page .right-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .login-page label {
