@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import '../styles/iniciar-sesion.css'
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
 function EyeIcon({ open }) {
   return open ? (
@@ -20,12 +22,54 @@ function EyeIcon({ open }) {
 
 export default function LoginPage() {
   const navigate = useNavigate()
-  const { iniciarSesion } = useAuth()
+  const { iniciarSesion, iniciarSesionGoogle } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [enviando, setEnviando] = useState(false)
+  const googleBtnRef = useRef(null)
+
+  async function handleGoogleCredential(response) {
+    setError('')
+    setEnviando(true)
+    try {
+      await iniciarSesionGoogle(response.credential)
+      navigate('/home')
+    } catch (err) {
+      setError(err.message || 'No se pudo iniciar sesión con Google.')
+    } finally {
+      setEnviando(false)
+    }
+  }
+
+  useEffect(() => {
+    if (!GOOGLE_CLIENT_ID) return
+
+    function renderGoogleButton() {
+      if (!window.google?.accounts?.id || !googleBtnRef.current) return
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleGoogleCredential,
+      })
+      googleBtnRef.current.innerHTML = ''
+      window.google.accounts.id.renderButton(googleBtnRef.current, {
+        type: 'standard',
+        theme: 'outline',
+        size: 'large',
+        width: googleBtnRef.current.offsetWidth || 300,
+      })
+    }
+
+    if (window.google?.accounts?.id) {
+      renderGoogleButton()
+      return
+    }
+    const script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]')
+    script?.addEventListener('load', renderGoogleButton)
+    return () => script?.removeEventListener('load', renderGoogleButton)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   async function handleEntrar(e) {
     e.preventDefault()
@@ -98,10 +142,11 @@ export default function LoginPage() {
             {enviando ? 'Entrando…' : 'Entrar'}
           </button>
 
-          <button type="button" className="btn-social">
+          <div className="btn-social google-btn-wrapper">
             <img src="/google.png" alt="Google" className="btn-social__icon" />
             Iniciar sesion con Google
-          </button>
+            <div ref={googleBtnRef} className="google-btn-overlay" />
+          </div>
 
           <button type="button" className="btn-social">
             <img src="/facebook.png" alt="Facebook" className="btn-social__icon" />

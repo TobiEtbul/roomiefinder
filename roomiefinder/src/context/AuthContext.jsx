@@ -51,6 +51,13 @@ export function AuthProvider({ children }) {
     return u
   }
 
+  async function iniciarSesionGoogle(idToken) {
+    const { token: nuevoToken, user_id } = await authApi.loginGoogle(idToken)
+    const u = await authApi.obtenerUsuario(user_id)
+    guardar(u, nuevoToken)
+    return u
+  }
+
   async function actualizarPerfil(cambios) {
     const u = await authApi.actualizarUsuario(usuario.id, cambios, token)
     guardar(u, token)
@@ -62,7 +69,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ usuario, token, registrar, iniciarSesion, actualizarPerfil, cerrarSesion }}>
+    <AuthContext.Provider value={{ usuario, token, registrar, iniciarSesion, iniciarSesionGoogle, actualizarPerfil, cerrarSesion }}>
       {children}
     </AuthContext.Provider>
   )

@@ -14,6 +14,13 @@ export function login(email, password) {
   })
 }
 
+export function loginGoogle(idToken) {
+  return apiFetch('/auth/google', {
+    method: 'POST',
+    body: JSON.stringify({ id_token: idToken }),
+  })
+}
+
 export function obtenerUsuario(id) {
   return apiFetch(`/users/${id}`)
 }
