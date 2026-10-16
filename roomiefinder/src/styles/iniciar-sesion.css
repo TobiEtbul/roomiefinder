@@ -187,12 +187,6 @@
   transition: background 0.15s;
 }
 
-.login-page .google-btn-container {
-  width: 100%;
-  margin-bottom: 12px;
-  display: flex;
-  justify-content: center;
-}
 
 .login-page .btn-social:hover {
   background: #f5f5f5;
