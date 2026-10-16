@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import '../styles/iniciar-sesion.css'
@@ -30,7 +30,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [enviando, setEnviando] = useState(false)
-  const [googleListo, setGoogleListo] = useState(false)
+  const googleBtnRef = useRef(null)
 
   async function handleGoogleCredential(response) {
     setError('')
@@ -48,34 +48,51 @@ export default function LoginPage() {
   useEffect(() => {
     if (!GOOGLE_CLIENT_ID) return
 
-    function initGoogle() {
-      if (!window.google?.accounts?.id) return
+    function renderGoogleButton() {
+      if (!window.google?.accounts?.id || !googleBtnRef.current) return
       window.google.accounts.id.initialize({
         client_id: GOOGLE_CLIENT_ID,
         callback: handleGoogleCredential,
       })
-      setGoogleListo(true)
+      googleBtnRef.current.innerHTML = ''
+      const width = Math.min(googleBtnRef.current.offsetWidth || 300, 400)
+      window.google.accounts.id.renderButton(googleBtnRef.current, {
+        type: 'standard',
+        theme: 'outline',
+        size: 'large',
+        shape: 'pill',
+        text: 'signin_with',
+        logo_alignment: 'left',
+        width,
+      })
+    }
+
+    function handleLoad() {
+      renderGoogleButton()
+    }
+
+    let resizeTimer
+    function handleResize() {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(renderGoogleButton, 200)
     }
 
     if (window.google?.accounts?.id) {
-      initGoogle()
-      return
+      renderGoogleButton()
+    } else {
+      const script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]')
+      script?.addEventListener('load', handleLoad)
     }
-    const script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]')
-    script?.addEventListener('load', initGoogle)
-    return () => script?.removeEventListener('load', initGoogle)
+
+    window.addEventListener('resize', handleResize)
+    return () => {
+      const script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]')
+      script?.removeEventListener('load', handleLoad)
+      window.removeEventListener('resize', handleResize)
+      clearTimeout(resizeTimer)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  function handleGoogleClick() {
-    if (!googleListo) return
-    setError('')
-    window.google.accounts.id.prompt(notification => {
-      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-        setError('No se pudo abrir el inicio de sesión con Google. Probá de nuevo.')
-      }
-    })
-  }
 
   async function handleEntrar(e) {
     e.preventDefault()
@@ -148,15 +165,7 @@ export default function LoginPage() {
             {enviando ? 'Entrando…' : 'Entrar'}
           </button>
 
-          <button
-            type="button"
-            className="btn-social"
-            onClick={handleGoogleClick}
-            disabled={!googleListo || enviando}
-          >
-            <img src="/google.png" alt="Google" className="btn-social__icon" />
-            Iniciar sesion con Google
-          </button>
+          <div ref={googleBtnRef} className="google-btn-container" />
 
           <button type="button" className="btn-social">
             <img src="/facebook.png" alt="Facebook" className="btn-social__icon" />
