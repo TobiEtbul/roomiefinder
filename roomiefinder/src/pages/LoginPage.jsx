@@ -3,7 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import '../styles/iniciar-sesion.css'
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
+const GOOGLE_CLIENT_ID =
+  import.meta.env.VITE_GOOGLE_CLIENT_ID ||
+  '363344464215-ri8482ksttiaj5pbfos44cdmbrl2rphe.apps.googleusercontent.com'
 
 function EyeIcon({ open }) {
   return open ? (
