@@ -55,21 +55,42 @@ export default function LoginPage() {
         callback: handleGoogleCredential,
       })
       googleBtnRef.current.innerHTML = ''
+      const width = Math.min(googleBtnRef.current.offsetWidth || 300, 400)
       window.google.accounts.id.renderButton(googleBtnRef.current, {
         type: 'standard',
         theme: 'outline',
         size: 'large',
-        width: googleBtnRef.current.offsetWidth || 300,
+        shape: 'pill',
+        text: 'signin_with',
+        logo_alignment: 'left',
+        width,
       })
+    }
+
+    function handleLoad() {
+      renderGoogleButton()
+    }
+
+    let resizeTimer
+    function handleResize() {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(renderGoogleButton, 200)
     }
 
     if (window.google?.accounts?.id) {
       renderGoogleButton()
-      return
+    } else {
+      const script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]')
+      script?.addEventListener('load', handleLoad)
     }
-    const script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]')
-    script?.addEventListener('load', renderGoogleButton)
-    return () => script?.removeEventListener('load', renderGoogleButton)
+
+    window.addEventListener('resize', handleResize)
+    return () => {
+      const script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]')
+      script?.removeEventListener('load', handleLoad)
+      window.removeEventListener('resize', handleResize)
+      clearTimeout(resizeTimer)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -144,11 +165,7 @@ export default function LoginPage() {
             {enviando ? 'Entrando…' : 'Entrar'}
           </button>
 
-          <div className="btn-social google-btn-wrapper">
-            <img src="/google.png" alt="Google" className="btn-social__icon" />
-            Iniciar sesion con Google
-            <div ref={googleBtnRef} className="google-btn-overlay" />
-          </div>
+          <div ref={googleBtnRef} className="google-btn-container" />
 
           <button type="button" className="btn-social">
             <img src="/facebook.png" alt="Facebook" className="btn-social__icon" />

@@ -171,7 +171,6 @@
 }
 
 .login-page .btn-social {
-  position: relative;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -186,13 +185,13 @@
   cursor: pointer;
   margin-bottom: 12px;
   transition: background 0.15s;
-  overflow: hidden;
 }
 
-.login-page .google-btn-overlay {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
+.login-page .google-btn-container {
+  width: 100%;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: center;
 }
 
 .login-page .btn-social:hover {
