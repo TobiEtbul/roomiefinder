@@ -1,5 +1,6 @@
-export const BASE_URL =
-  import.meta.env.VITE_API_URL || 'https://roomie-finder-bay.vercel.app'
+// La web se sirve desde el mismo dominio que la API, asi que alcanza con una ruta relativa.
+// En desarrollo, vite.config.js redirige /api al backend.
+export const BASE_URL = import.meta.env.VITE_API_URL || '/api'
 
 export class ApiError extends Error {
   constructor(status, message) {
